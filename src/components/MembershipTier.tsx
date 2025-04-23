@@ -1,15 +1,11 @@
-
-import { useState, useEffect } from "react";
-import {
-  Tier,
-  userData,
-  tiers,
-  findTierById,
-  getNextTier,
-  canUpgradeToTier,
-} from "../data/tierData";
+import { useEffect, useState } from "react";
+import { Tier, userData, tiers, findTierById, getNextTier, canUpgradeToTier } from "../data/tierData";
 import PremiumTierCarousel from "./PremiumTierCarousel";
 import PrivilegesList from "./PrivilegesList";
+import DailyCheckin from "./DailyCheckin";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Gift } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
 
@@ -97,22 +93,23 @@ const MembershipTier = () => {
 
   return (
     <div className={`min-h-screen ${getBackgroundGradient()} flex flex-col items-center transition-colors duration-700`}>
-      {/* Header small gradient background, fixed height */}
+      {/* Header section */}
       <div className="relative w-full flex-shrink-0" style={{height: 120}}>
-        <motion.div
-          className="absolute inset-0 z-0"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          style={{
-            background: "linear-gradient(111deg, rgba(177, 216, 253, 0.6) 0%, rgba(232, 236, 251, 0.5) 80%)",
-          }}
-        />
+        <div className="absolute inset-0 z-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:from-blue-900/40 dark:to-purple-900/40" />
         <div className="relative z-10 flex flex-col items-center justify-center h-full pt-6">
-          <h1 className="text-2xl md:text-3xl font-extrabold text-[#2b468e] dark:text-[#bdd0f6] drop-shadow-md">Membership Tier</h1>
+          <h1 className="text-2xl md:text-3xl font-extrabold text-gray-800 dark:text-white drop-shadow-md">
+            ระดับสมาชิก
+          </h1>
         </div>
       </div>
-      {/* Carousel floats over header, overlaps */}
-      <div className="w-full flex flex-col items-center z-20 -mt-14 pb-2 px-2 md:px-0">
+
+      {/* Add Daily Check-in Section */}
+      <div className="w-full max-w-4xl mx-auto px-4 -mt-6 mb-8 z-20">
+        <DailyCheckin />
+      </div>
+
+      {/* Carousel section */}
+      <div className="w-full flex flex-col items-center z-20 -mt-4 pb-2 px-2 md:px-0">
         <PremiumTierCarousel
           tiers={tiers}
           currentTierId={userData.currentTier}
@@ -124,11 +121,26 @@ const MembershipTier = () => {
           selectedTierId={selectedTierId}
         />
       </div>
+
+      {/* Link to Rewards page */}
+      <div className="w-full max-w-4xl mx-auto px-4 mb-8">
+        <Link to="/rewards">
+          <Button className="w-full" size="lg">
+            <Gift className="w-5 h-5 mr-2" />
+            แลกของรางวัล
+          </Button>
+        </Link>
+      </div>
+
       {/* Privileges section */}
       <div className="w-full max-w-2xl mx-auto mt-2 md:mt-8 z-10">
-        <PrivilegesList tier={selectedTier} isLocked={isLocked && !isCurrentTierSelected} />
+        <PrivilegesList 
+          tier={selectedTier} 
+          isLocked={isLocked && !isCurrentTierSelected} 
+        />
       </div>
     </div>
   );
 };
+
 export default MembershipTier;
