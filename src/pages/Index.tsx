@@ -1,7 +1,8 @@
-
 import { useState, useEffect } from "react";
 import MembershipTier from "@/components/MembershipTier";
+import DailyCheckin from "@/components/DailyCheckin";
 import { Moon, Sun } from "lucide-react";
+import MainNav from "@/components/MainNav";
 
 const Index = () => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -39,8 +40,23 @@ const Index = () => {
   
   return (
     <div className={theme}>
-      <MembershipTier />
+      <MainNav />
       
+      {/* Main content */}
+      <main className="min-h-screen pt-20">
+        {/* Membership Tier Section */}
+        <section className="w-full">
+          <MembershipTier />
+        </section>
+
+        {/* Daily Check-in Section */}
+        <section className="container max-w-4xl mx-auto px-4 pb-24">
+          <div className="my-8">
+            <DailyCheckin />
+          </div>
+        </section>
+      </main>
+
       {/* Theme toggle with improved design */}
       <button 
         onClick={toggleTheme}

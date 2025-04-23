@@ -101,7 +101,7 @@
 
 @layer utilities {
   .glass-card {
-    @apply backdrop-blur-md bg-white/80 dark:bg-gray-900/70 border border-white/20 dark:border-white/10 shadow-xl;
+    @apply bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border border-white/20 dark:border-gray-700/30;
   }
   
   .premium-glass {
@@ -148,5 +148,9 @@
     100% {
       transform: translateY(0px);
     }
+  }
+
+  .premium-shadow {
+    @apply shadow-[0_8px_30px_rgb(0,0,0,0.12)];
   }
 }

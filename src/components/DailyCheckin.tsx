@@ -23,18 +23,22 @@ const DailyCheckin = () => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="w-full glass-card rounded-xl shadow-lg overflow-hidden"
+    >
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
-            <Calendar className="w-5 h-5 text-blue-500" />
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <Calendar className="w-5 h-5 text-primary" />
+            <h3 className="text-lg font-semibold">
               เช็คอินรายวัน
             </h3>
           </div>
           <div className="flex items-center space-x-1">
-            <Gift className="w-4 h-4 text-purple-500" />
-            <span className="text-sm text-purple-500 font-medium">+10 คะแนน</span>
+            <Gift className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-primary">+10 คะแนน</span>
           </div>
         </div>
 
@@ -43,33 +47,33 @@ const DailyCheckin = () => {
           whileTap={{ scale: 0.98 }}
           onClick={handleCheckin}
           disabled={isCheckedIn || loading}
-          className={`w-full py-3 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2
+          className={`w-full py-3 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2
             ${isCheckedIn 
-              ? 'bg-green-100 dark:bg-green-900 cursor-not-allowed' 
-              : 'bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700'}`}
+              ? 'bg-muted cursor-not-allowed' 
+              : 'bg-primary hover:bg-primary/90'}`}
         >
           {isCheckedIn ? (
             <>
-              <Check className="w-5 h-5 text-green-600 dark:text-green-400" />
-              <span className="text-green-600 dark:text-green-400 font-medium">เช็คอินแล้ววันนี้</span>
+              <Check className="w-5 h-5 text-primary" />
+              <span className="text-primary font-medium">เช็คอินแล้ววันนี้</span>
             </>
           ) : loading ? (
-            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
           ) : (
             <>
-              <Calendar className="w-5 h-5 text-white" />
-              <span className="text-white font-medium">เช็คอินวันนี้</span>
+              <Calendar className="w-5 h-5 text-primary-foreground" />
+              <span className="text-primary-foreground font-medium">เช็คอินวันนี้</span>
             </>
           )}
         </motion.button>
 
         <div className="mt-4">
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-muted-foreground">
             เช็คอินทุกวันเพื่อรับคะแนนสะสม และแลกรับของรางวัลพิเศษ
           </p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
