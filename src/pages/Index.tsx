@@ -11,8 +11,11 @@ const Index = () => {
     // Get stored theme or system preference
     const storedTheme = localStorage.getItem("theme") || 
       (window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light");
-    setTheme(storedTheme);
-    document.documentElement.classList.toggle("dark", storedTheme === "dark");
+    
+    // Ensure the value is either "dark" or "light" before setting state
+    const validTheme = storedTheme === "dark" ? "dark" : "light";
+    setTheme(validTheme);
+    document.documentElement.classList.toggle("dark", validTheme === "dark");
     
     // Listen for changes in color scheme preference
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
