@@ -1,11 +1,10 @@
 
 import { useRef, useEffect, useState } from "react";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import TierCard from "./TierCard";
 import { cn } from "@/lib/utils";
 import { Tier } from "../data/tierData";
 
-// snap points are handled by embla carousel (shadcn/ui)
 interface PremiumTierCarouselProps {
   tiers: Tier[];
   currentTierId: string;
@@ -39,6 +38,23 @@ const PremiumTierCarousel = ({
     }
   }, [api, selectedIdx]);
 
+  // Handle carousel change - notify parent when selected slide changes
+  useEffect(() => {
+    if (!api) return;
+
+    const handleSelect = () => {
+      const selectedSnap = api.selectedScrollSnap();
+      if (selectedSnap !== undefined && tiers[selectedSnap]) {
+        onTierChange(tiers[selectedSnap].id);
+      }
+    };
+
+    api.on('select', handleSelect);
+    return () => {
+      api.off('select', handleSelect);
+    };
+  }, [api, tiers, onTierChange]);
+
   return (
     <div className="w-full max-w-3xl mx-auto relative">
       <Carousel
@@ -46,15 +62,13 @@ const PremiumTierCarousel = ({
           align: "center",
           loop: false,
           skipSnaps: false,
+          dragFree: true,
         }}
         setApi={setApi}
         className="w-full"
       >
-        {/* Navigation arrows */}
-        <CarouselPrevious className="bg-white/80 dark:bg-slate-950/60 border-none shadow-lg -left-4 md:-left-8 z-40" />
-        <CarouselNext className="bg-white/80 dark:bg-slate-950/60 border-none shadow-lg -right-4 md:-right-8 z-40" />
         {/* Cards content */}
-        <CarouselContent className="h-[270px] md:h-[306px]">
+        <CarouselContent className="h-[260px] md:h-[280px]">
           {tiers.map((tier, i) => {
             // Compute locked and upgrade status
             const isLocked = currentPoints < tier.requiredPoints;
@@ -68,9 +82,7 @@ const PremiumTierCarousel = ({
             return (
               <CarouselItem 
                 key={tier.id}
-                className={cn("w-[87vw] sm:w-[430px] md:w-[440px] max-w-lg px-2 transition-transform duration-700")}
-                // When selected, increase scale and shadow
-                // The embla library manages visible state, but we can style using selectedTierId
+                className={cn("w-[87vw] sm:w-[380px] md:w-[400px] max-w-lg px-4 transition-transform duration-700")}
               >
                 <TierCard
                   tier={tier}

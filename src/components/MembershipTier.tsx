@@ -69,25 +69,50 @@ const MembershipTier = () => {
 
   const isCurrentTierSelected = selectedTierId === userData.currentTier;
   const isLocked = userData.currentPoints < selectedTier.requiredPoints;
+  
+  // Get the background gradient based on selected tier
+  const getBackgroundGradient = () => {
+    const dark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
+    
+    if (dark) {
+      switch (selectedTier.id) {
+        case "general": return "bg-gradient-to-b from-[#10162b] via-gray-950 to-[#1e293b]";
+        case "bronze": return "bg-gradient-to-b from-[#251911] via-gray-950 to-[#1e293b]";
+        case "silver": return "bg-gradient-to-b from-[#292942] via-gray-950 to-[#1e293b]";
+        case "gold": return "bg-gradient-to-b from-[#403618] via-gray-950 to-[#1e293b]";
+        case "platinum": return "bg-gradient-to-b from-[#2d3748] via-gray-950 to-[#1e293b]";
+        default: return "bg-gradient-to-b from-[#10162b] via-gray-950 to-[#1e293b]";
+      }
+    }
+    
+    switch (selectedTier.id) {
+      case "general": return "bg-gradient-to-b from-[#9ccff4] via-white to-white";
+      case "bronze": return "bg-gradient-to-b from-[#ffe2c1] via-white to-white";
+      case "silver": return "bg-gradient-to-b from-[#d7dbe7] via-white to-white";
+      case "gold": return "bg-gradient-to-b from-[#fff4c6] via-white to-white";
+      case "platinum": return "bg-gradient-to-b from-[#f5faff] via-white to-white";
+      default: return "bg-gradient-to-b from-[#9ccff4] via-white to-white";
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#9ccff4] via-white dark:from-[#10162b] dark:via-gray-950 to-white dark:to-[#1e293b] flex flex-col items-center">
+    <div className={`min-h-screen ${getBackgroundGradient()} flex flex-col items-center transition-colors duration-700`}>
       {/* Header small gradient background, fixed height */}
-      <div className="relative w-full flex-shrink-0" style={{height: 180}}>
+      <div className="relative w-full flex-shrink-0" style={{height: 120}}>
         <motion.div
           className="absolute inset-0 z-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           style={{
-            background: "linear-gradient(111deg, #b1d8fd 0%, #e8ecfb 80%)",
+            background: "linear-gradient(111deg, rgba(177, 216, 253, 0.6) 0%, rgba(232, 236, 251, 0.5) 80%)",
           }}
         />
         <div className="relative z-10 flex flex-col items-center justify-center h-full pt-6">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-[#2b468e] dark:text-[#bdd0f6] drop-shadow-md">Membership Tier</h1>
+          <h1 className="text-2xl md:text-3xl font-extrabold text-[#2b468e] dark:text-[#bdd0f6] drop-shadow-md">Membership Tier</h1>
         </div>
       </div>
       {/* Carousel floats over header, overlaps */}
-      <div className="w-full flex flex-col items-center z-20 -mt-24 pb-2 px-2 md:px-0">
+      <div className="w-full flex flex-col items-center z-20 -mt-14 pb-2 px-2 md:px-0">
         <PremiumTierCarousel
           tiers={tiers}
           currentTierId={userData.currentTier}

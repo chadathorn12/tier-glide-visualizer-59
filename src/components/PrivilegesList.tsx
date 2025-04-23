@@ -1,5 +1,4 @@
 
-import { motion } from "framer-motion";
 import { Privilege, Tier } from "../data/tierData";
 import { Lock } from "lucide-react";
 import {
@@ -20,24 +19,6 @@ interface PrivilegesListProps {
 }
 
 const PrivilegesList = ({ tier, isLocked }: PrivilegesListProps) => {
-  // Animation variants for container
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  // Animation variants for items
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 },
-  };
-
   // Render appropriate icon based on privilege icon string
   const renderIcon = (iconName: string, isEnabled: boolean) => {
     const iconProps = {
@@ -69,58 +50,111 @@ const PrivilegesList = ({ tier, isLocked }: PrivilegesListProps) => {
     }
   };
 
+  const getHeaderColor = (tier: Tier) => {
+    const dark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
+    
+    if (dark) {
+      switch (tier.id) {
+        case "general": return "text-blue-300";
+        case "bronze": return "text-amber-300";
+        case "silver": return "text-slate-300";
+        case "gold": return "text-yellow-300";
+        case "platinum": return "text-slate-200";
+        default: return "text-blue-300";
+      }
+    }
+
+    switch (tier.id) {
+      case "general": return "text-blue-600";
+      case "bronze": return "text-amber-600";
+      case "silver": return "text-slate-600";
+      case "gold": return "text-yellow-600";
+      case "platinum": return "text-slate-700";
+      default: return "text-blue-600";
+    }
+  };
+  
+  const getIconBgColor = (tier: Tier) => {
+    const dark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
+    
+    if (dark) {
+      switch (tier.id) {
+        case "general": return "bg-blue-900/60";
+        case "bronze": return "bg-amber-900/60";
+        case "silver": return "bg-slate-700/60";
+        case "gold": return "bg-yellow-900/60";
+        case "platinum": return "bg-slate-700/60";
+        default: return "bg-blue-900/60";
+      }
+    }
+
+    switch (tier.id) {
+      case "general": return "bg-blue-200";
+      case "bronze": return "bg-amber-200";
+      case "silver": return "bg-slate-200";
+      case "gold": return "bg-yellow-200";
+      case "platinum": return "bg-slate-200";
+      default: return "bg-blue-200";
+    }
+  };
+
+  const getUnderlineColor = (tier: Tier) => {
+    const dark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
+    
+    if (dark) {
+      switch (tier.id) {
+        case "general": return "bg-blue-500";
+        case "bronze": return "bg-amber-500";
+        case "silver": return "bg-slate-400";
+        case "gold": return "bg-yellow-500";
+        case "platinum": return "bg-slate-400";
+        default: return "bg-blue-500";
+      }
+    }
+
+    switch (tier.id) {
+      case "general": return "bg-blue-500";
+      case "bronze": return "bg-amber-500";
+      case "silver": return "bg-slate-500";
+      case "gold": return "bg-yellow-500";
+      case "platinum": return "bg-slate-500";
+      default: return "bg-blue-500";
+    }
+  };
+
   return (
-    <div className="py-12 px-4">
-      <motion.h2 
-        className="text-3xl font-bold mb-10 text-center text-gradient relative"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1, duration: 0.4 }}
-        style={{ 
-          backgroundImage: `linear-gradient(135deg, ${tier.colors.primary} 0%, ${tier.colors.accent} 100%)`,
-          WebkitBackgroundClip: 'text'
-        }}
-      >
-        {tier.name} Privileges
-        <motion.div 
-          className="h-1 w-24 rounded-full mx-auto mt-3"
-          initial={{ width: 0, opacity: 0 }}
-          animate={{ width: 96, opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.4 }}
-          style={{ backgroundColor: tier.colors.primary }}
+    <div className="py-10 px-4">
+      <div className="text-center">
+        <h2 
+          className={cn(
+            "text-3xl font-bold mb-2", 
+            getHeaderColor(tier)
+          )}
+        >
+          {tier.name} Privileges
+        </h2>
+        <div 
+          className={cn(
+            "h-1 w-24 rounded-full mx-auto mb-8",
+            getUnderlineColor(tier)
+          )}
         />
-      </motion.h2>
+      </div>
       
-      <motion.div 
-        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
-        variants={containerVariants}
-        initial="hidden"
-        animate="show"
-      >
-        {tier.privileges.map((privilege, index) => (
-          <motion.div
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        {tier.privileges.map((privilege) => (
+          <div
             key={privilege.id}
             className={cn(
               "flex flex-col items-center text-center",
               isLocked ? "opacity-70" : ""
             )}
-            variants={itemVariants}
-            whileHover={{ scale: isLocked ? 1 : 1.05 }}
-            custom={index}
           >
-            <motion.div 
+            <div 
               className={cn(
                 "relative mb-4 rounded-full p-5 flex items-center justify-center shadow-lg",
-                isLocked ? "" : "animate-float"
+                getIconBgColor(tier)
               )}
-              style={{ 
-                backgroundColor: isLocked 
-                  ? "rgba(0,0,0,0.1)" 
-                  : `${tier.colors.secondary}`,
-                boxShadow: isLocked 
-                  ? "none" 
-                  : `0 10px 15px -3px ${tier.colors.secondary}40`
-              }}
             >
               {renderIcon(privilege.icon, !isLocked && privilege.enabled)}
               
@@ -129,7 +163,7 @@ const PrivilegesList = ({ tier, isLocked }: PrivilegesListProps) => {
                   <Lock size={14} className="text-gray-500" />
                 </div>
               )}
-            </motion.div>
+            </div>
             
             <h3 
               className={cn(
@@ -141,9 +175,9 @@ const PrivilegesList = ({ tier, isLocked }: PrivilegesListProps) => {
             >
               {privilege.name}
             </h3>
-          </motion.div>
+          </div>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 };
