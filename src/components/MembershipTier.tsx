@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import {
   Tier,
   userData,
@@ -9,9 +8,10 @@ import {
   getNextTier,
   canUpgradeToTier,
 } from "../data/tierData";
-import TierCarousel from "./TierCarousel";
+import PremiumTierCarousel from "./PremiumTierCarousel";
 import PrivilegesList from "./PrivilegesList";
 import { useToast } from "@/components/ui/use-toast";
+import { motion } from "framer-motion";
 
 const MembershipTier = () => {
   const { toast } = useToast();
@@ -19,7 +19,6 @@ const MembershipTier = () => {
   const [selectedTier, setSelectedTier] = useState<Tier | undefined>(
     findTierById(userData.currentTier)
   );
-  const [backgroundStyle, setBackgroundStyle] = useState({});
 
   // Calculate points to next tier
   const nextTier = getNextTier(userData.currentTier);
@@ -29,15 +28,7 @@ const MembershipTier = () => {
 
   // Update selected tier when the ID changes
   useEffect(() => {
-    const tier = findTierById(selectedTierId);
-    setSelectedTier(tier);
-    
-    if (tier) {
-      setBackgroundStyle({
-        background: tier.colors.background,
-        transition: "all 0.5s ease-in-out",
-      });
-    }
+    setSelectedTier(findTierById(selectedTierId));
   }, [selectedTierId]);
 
   // Handle tier upgrade
@@ -80,42 +71,39 @@ const MembershipTier = () => {
   const isLocked = userData.currentPoints < selectedTier.requiredPoints;
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Dynamic background header */}
-      <motion.div
-        className="w-full py-16 px-6 text-white relative overflow-hidden"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        style={backgroundStyle}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/10"></div>
-        <div className="container mx-auto relative z-10">
-          <h1 className="text-5xl font-bold text-center mb-4">Membership Tier</h1>
+    <div className="min-h-screen bg-gradient-to-b from-[#9ccff4] via-white dark:from-[#10162b] dark:via-gray-950 to-white dark:to-[#1e293b] flex flex-col items-center">
+      {/* Header small gradient background, fixed height */}
+      <div className="relative w-full flex-shrink-0" style={{height: 180}}>
+        <motion.div
+          className="absolute inset-0 z-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          style={{
+            background: "linear-gradient(111deg, #b1d8fd 0%, #e8ecfb 80%)",
+          }}
+        />
+        <div className="relative z-10 flex flex-col items-center justify-center h-full pt-6">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-[#2b468e] dark:text-[#bdd0f6] drop-shadow-md">Membership Tier</h1>
         </div>
-      </motion.div>
-
-      {/* Main content */}
-      <div className="flex-grow bg-white dark:bg-gray-900">
-        <div className="container mx-auto">
-          {/* Tier carousel */}
-          <div className="my-6">
-            <TierCarousel
-              tiers={tiers}
-              currentTierId={userData.currentTier}
-              walletId={userData.walletId}
-              currentPoints={userData.currentPoints}
-              onTierChange={handleTierChange}
-              onUpgrade={handleUpgrade}
-              pointsToNextTier={pointsToNextTier}
-            />
-          </div>
-
-          {/* Privileges section */}
-          <PrivilegesList tier={selectedTier} isLocked={isLocked && !isCurrentTierSelected} />
-        </div>
+      </div>
+      {/* Carousel floats over header, overlaps */}
+      <div className="w-full flex flex-col items-center z-20 -mt-24 pb-2 px-2 md:px-0">
+        <PremiumTierCarousel
+          tiers={tiers}
+          currentTierId={userData.currentTier}
+          walletId={userData.walletId}
+          currentPoints={userData.currentPoints}
+          onTierChange={handleTierChange}
+          onUpgrade={handleUpgrade}
+          pointsToNextTier={pointsToNextTier}
+          selectedTierId={selectedTierId}
+        />
+      </div>
+      {/* Privileges section */}
+      <div className="w-full max-w-2xl mx-auto mt-2 md:mt-8 z-10">
+        <PrivilegesList tier={selectedTier} isLocked={isLocked && !isCurrentTierSelected} />
       </div>
     </div>
   );
 };
-
 export default MembershipTier;
