@@ -1,17 +1,9 @@
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import { Coins, Gift, AlertCircle } from "lucide-react";
+import { Coins, Gift, AlertCircle, Crown, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import MainNav from "@/components/MainNav";
 import { userData, findTierById } from "@/data/tierData";
@@ -38,10 +30,9 @@ const Rewards = () => {
   const [selectedReward, setSelectedReward] = useState<Reward | null>(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [processing, setProcessing] = useState(false);
-  const [isDataLoaded, setIsDataLoaded] = useState(true); // Changed to true for demo
+  const [isDataLoaded, setIsDataLoaded] = useState(true);
   const [coinPoints, setCoinPoints] = useState<string>(userData.currentPoints.toString());
-  
-  // ดึงข้อมูลระดับสมาชิกปัจจุบัน
+
   const currentTier = findTierById(userData.currentTier);
 
   const rewards: Reward[] = [
@@ -108,7 +99,7 @@ const Rewards = () => {
       
       toast({
         title: "แลกรางวัลสำเร็จ!",
-        description: `คุณได้แลก ${selectedReward.name} เรียบร้อยแล้ว`,
+        description: `คุณได้แลก ${selectedReward.name} เรียบร้อยแล้���`,
       });
 
       if (selectedReward.goTo) {
@@ -117,7 +108,6 @@ const Rewards = () => {
     }, 1500);
   };
 
-  // กำหนดสีและสไตล์ให้สอดคล้องกับระดับสมาชิก
   const getBackgroundGradient = () => {
     const dark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
     
@@ -222,113 +212,114 @@ const Rewards = () => {
     <div className={getBackgroundGradient()}>
       <MainNav />
       
-      <main className="min-h-screen pt-20 pb-24">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
+      <main className="min-h-screen pb-24">
+        <div className="relative w-full h-[300px] overflow-hidden">
+          <div className={`absolute inset-0 ${getCardGlassStyle()}`} />
+          <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`w-full p-6 rounded-xl shadow-lg mb-8 ${getCardGlassStyle()} border border-white/20 dark:border-gray-700/30 backdrop-blur-md`}
+              className="text-center"
             >
-              <div className="flex flex-col sm:flex-row justify-between items-center">
-                <div className="text-center sm:text-left mb-4 sm:mb-0">
-                  <h5 className="text-2xl font-bold mb-2">คะแนนสะสม</h5>
-                  <p className="text-gray-600 dark:text-gray-300">ใช้คะแนนสะสมเพื่อแลกรับของรางวัลพิเศษ</p>
-                </div>
-                <div className="text-center sm:text-right">
-                  <div className="text-4xl font-bold mb-1">
-                    {parseInt(coinPoints).toLocaleString('en-US')}
-                  </div>
-                  <div className={`flex items-center justify-center sm:justify-end ${getAccentColor()}`}>
-                    <Coins className="w-6 h-6 mr-2" />
-                    <span className="text-xl font-semibold">คะแนน</span>
-                  </div>
-                </div>
+              <div className="flex items-center justify-center mb-4">
+                <Crown className={`w-10 h-10 ${getAccentColor()} mr-3`} />
+                <h1 className="text-4xl font-bold">แลกรางวัล</h1>
               </div>
+              <div className="flex items-center justify-center space-x-3 mt-6">
+                <Coins className={`w-6 h-6 ${getAccentColor()}`} />
+                <span className="text-3xl font-bold">{parseInt(coinPoints).toLocaleString('en-US')}</span>
+                <span className={`text-xl ${getAccentColor()}`}>คะแนน</span>
+              </div>
+              <p className="mt-4 text-gray-600 dark:text-gray-300">ใช้คะแนนสะสมเพื่อแลกรับของรางวัลสุดพิเศษ</p>
             </motion.div>
+          </div>
+          <div className="absolute bottom-0 w-full h-24 bg-gradient-to-t from-background to-transparent" />
+        </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {rewards.map((reward) => (
-                <motion.div
-                  key={reward.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Card className={`${getRewardCardStyle()} shadow-lg hover:shadow-xl transition-shadow duration-200 ${getCardGlassStyle()}`}>
-                    <div className="relative">
-                      <img
-                        src={reward.image}
-                        alt={reward.name}
-                        className="w-full h-48 object-cover"
-                      />
-                      {reward.isGashapon && (
-                        <span className={`absolute top-2 right-2 ${getButtonStyle()} text-xs font-bold px-2 py-1 rounded-full`}>
-                          Gashapon
-                        </span>
-                      )}
-                    </div>
+        <div className="container mx-auto px-4 -mt-20 relative z-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {rewards.map((reward, index) => (
+              <motion.div
+                key={reward.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+              >
+                <Card className={`group relative h-full transform transition-all duration-300 hover:scale-105 hover:shadow-xl ${getRewardCardStyle()}`}>
+                  <div className="relative h-48 overflow-hidden rounded-t-lg">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10" />
+                    <img
+                      src={reward.image}
+                      alt={reward.name}
+                      className="w-full h-full object-cover transform transition-transform group-hover:scale-110 duration-700"
+                    />
+                    {reward.isGashapon && (
+                      <span className={`absolute top-3 right-3 z-20 ${getButtonStyle()} text-xs font-bold px-3 py-1.5 rounded-full backdrop-blur-sm`}>
+                        Gashapon
+                      </span>
+                    )}
+                  </div>
+                  
+                  <div className="p-6 flex flex-col h-[calc(100%-192px)]">
+                    <h3 className="text-xl font-bold mb-2 line-clamp-1">{reward.name}</h3>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2 flex-grow">
+                      {reward.description}
+                    </p>
                     
-                    <div className="p-4 flex flex-col flex-grow">
-                      <h3 className="text-xl font-semibold mb-2">{reward.name}</h3>
-                      <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 flex-grow">
-                        {reward.description}
-                      </p>
-                      
-                      <div className="flex items-center justify-between mt-auto">
-                        <div className="flex items-center space-x-1">
-                          <Coins className={`w-5 h-5 ${getAccentColor()}`} />
-                          <span className="font-bold">
-                            {reward.coinCost <= 0 ? "ฟรี" : reward.coinCost}
-                          </span>
-                        </div>
-                        
-                        <Button
-                          onClick={() => handleExchange(reward)}
-                          className={`space-x-2 ${getButtonStyle()}`}
-                          disabled={processing}
-                        >
-                          <Gift className="w-4 h-4" />
-                          <span>แลกรางวัล</span>
-                        </Button>
+                    <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-200 dark:border-gray-700/30">
+                      <div className="flex items-center space-x-2">
+                        <Coins className={`w-5 h-5 ${getAccentColor()}`} />
+                        <span className={`font-bold ${getAccentColor()}`}>
+                          {reward.coinCost.toLocaleString()}
+                        </span>
                       </div>
+                      
+                      <Button
+                        onClick={() => handleExchange(reward)}
+                        className={`${getButtonStyle()} space-x-2`}
+                        disabled={processing}
+                      >
+                        <span>แลกรางวัล</span>
+                        <ChevronRight className="w-4 h-4" />
+                      </Button>
                     </div>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
+                  </div>
+                </Card>
+              </motion.div>
+            ))}
           </div>
         </div>
       </main>
 
       <Dialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
-        <DialogContent className={getCardGlassStyle()}>
+        <DialogContent className={`${getCardGlassStyle()} max-w-md mx-auto`}>
           <DialogHeader>
-            <DialogTitle>ยืนยันการแลกรางวัล</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-xl font-bold">ยืนยันการแลกรางวัล</DialogTitle>
+            <DialogDescription className="mt-2">
               {selectedReward?.confirmationMessage}
             </DialogDescription>
           </DialogHeader>
 
-          <div className="flex items-center space-x-2 text-yellow-500">
+          <div className={`flex items-center space-x-2 p-4 rounded-lg bg-yellow-500/10 ${getAccentColor()}`}>
             <AlertCircle className="w-5 h-5" />
             <p className="text-sm">
-              คะแนนที่ใช้: {selectedReward?.coinCost} points
+              คะแนนที่ใช้: {selectedReward?.coinCost.toLocaleString()} points
             </p>
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="sm:space-x-2">
             <Button
               variant="outline"
               onClick={() => setConfirmDialogOpen(false)}
               disabled={processing}
+              className="flex-1 sm:flex-none"
             >
               ยกเลิก
             </Button>
             <Button
               onClick={confirmExchange}
               disabled={processing}
-              className={getButtonStyle()}
+              className={`${getButtonStyle()} flex-1 sm:flex-none`}
             >
               {processing ? (
                 <div className="flex items-center space-x-2">
