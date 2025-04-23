@@ -1,24 +1,18 @@
 import { useState, useEffect } from "react";
 import MembershipTier from "@/components/MembershipTier";
-import DailyCheckin from "@/components/DailyCheckin";
 import { Moon, Sun } from "lucide-react";
 import MainNav from "@/components/MainNav";
 
 const Index = () => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   
-  // Check system preference for dark mode
   useEffect(() => {
-    // Get stored theme or system preference
     const storedTheme = localStorage.getItem("theme") || 
       (window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light");
-    
-    // Ensure the value is either "dark" or "light" before setting state
     const validTheme = storedTheme === "dark" ? "dark" : "light";
     setTheme(validTheme);
     document.documentElement.classList.toggle("dark", validTheme === "dark");
     
-    // Listen for changes in color scheme preference
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = (e: MediaQueryListEvent) => {
       const newTheme = e.matches ? "dark" : "light";
@@ -42,22 +36,12 @@ const Index = () => {
     <div className={theme}>
       <MainNav />
       
-      {/* Main content */}
       <main className="min-h-screen pt-20">
-        {/* Membership Tier Section */}
         <section className="w-full">
           <MembershipTier />
         </section>
-
-        {/* Daily Check-in Section */}
-        <section className="container max-w-4xl mx-auto px-4 pb-24">
-          <div className="my-8">
-            <DailyCheckin />
-          </div>
-        </section>
       </main>
 
-      {/* Theme toggle with improved design */}
       <button 
         onClick={toggleTheme}
         className="fixed bottom-6 right-6 p-3 rounded-full shadow-lg z-50 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"

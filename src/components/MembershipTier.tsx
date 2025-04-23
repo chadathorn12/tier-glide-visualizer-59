@@ -4,8 +4,6 @@ import PremiumTierCarousel from "./PremiumTierCarousel";
 import PrivilegesList from "./PrivilegesList";
 import DailyCheckin from "./DailyCheckin";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Gift } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
 
@@ -103,13 +101,8 @@ const MembershipTier = () => {
         </div>
       </div>
 
-      {/* Add Daily Check-in Section */}
-      <div className="w-full max-w-4xl mx-auto px-4 -mt-6 mb-8 z-20">
-        <DailyCheckin />
-      </div>
-
       {/* Carousel section */}
-      <div className="w-full flex flex-col items-center z-20 -mt-4 pb-2 px-2 md:px-0">
+      <div className="w-full flex flex-col items-center z-20 pb-2 px-2 md:px-0">
         <PremiumTierCarousel
           tiers={tiers}
           currentTierId={userData.currentTier}
@@ -122,22 +115,17 @@ const MembershipTier = () => {
         />
       </div>
 
-      {/* Link to Rewards page */}
-      <div className="w-full max-w-4xl mx-auto px-4 mb-8">
-        <Link to="/rewards">
-          <Button className="w-full" size="lg">
-            <Gift className="w-5 h-5 mr-2" />
-            แลกของรางวัล
-          </Button>
-        </Link>
-      </div>
-
       {/* Privileges section */}
       <div className="w-full max-w-2xl mx-auto mt-2 md:mt-8 z-10">
         <PrivilegesList 
           tier={selectedTier} 
           isLocked={isLocked && !isCurrentTierSelected} 
         />
+      </div>
+
+      {/* Daily Check-in Section */}
+      <div className="w-full max-w-4xl mx-auto px-4 mb-8 z-20">
+        <DailyCheckin />
       </div>
     </div>
   );

@@ -37,7 +37,7 @@ const Rewards = () => {
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
-  const [coinPoints, setCoinPoints] = useState(0);
+  const [coinPoints, setCoinPoints] = useState<string>("0");
 
   const rewards: Reward[] = [
     {
@@ -93,7 +93,7 @@ const Rewards = () => {
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="w-full p-6 glass-card mb-8"
+                className="w-full p-6 glass-card rounded-xl shadow-lg mb-8"
               >
                 <div className="flex flex-col sm:flex-row justify-between items-center">
                   <div className="text-center sm:text-left mb-4 sm:mb-0">
@@ -147,7 +147,7 @@ const Rewards = () => {
                         className="w-full h-48 object-cover"
                       />
                       {reward.isGashapon && (
-                        <span className="absolute top-2 right-2 bg-yellow-400 text-xs font-bold px-2 py-1 rounded-full">
+                        <span className="absolute top-2 right-2 bg-yellow-400/90 backdrop-blur-sm text-xs font-bold px-2 py-1 rounded-full">
                           Gashapon
                         </span>
                       )}
@@ -155,13 +155,13 @@ const Rewards = () => {
                     
                     <div className="p-4 flex flex-col flex-grow">
                       <h3 className="text-xl font-semibold mb-2">{reward.name}</h3>
-                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-grow">
+                      <p className="text-muted-foreground text-sm mb-4 flex-grow">
                         {reward.description}
                       </p>
                       
                       <div className="flex items-center justify-between mt-auto">
                         <div className="flex items-center space-x-1">
-                          <Coins className="w-5 h-5 text-yellow-500" />
+                          <Coins className="w-5 h-5 text-primary" />
                           <span className="font-bold">
                             {reward.coinCost <= 0 ? "ฟรี" : reward.coinCost}
                           </span>
@@ -171,6 +171,7 @@ const Rewards = () => {
                           onClick={() => handleExchange(reward)}
                           variant="default"
                           className="space-x-2"
+                          disabled={processing}
                         >
                           <Gift className="w-4 h-4" />
                           <span>แลกรางวัล</span>
