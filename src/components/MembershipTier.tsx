@@ -1,9 +1,9 @@
+
 import { useEffect, useState } from "react";
 import { Tier, userData, tiers, findTierById, getNextTier, canUpgradeToTier } from "../data/tierData";
 import PremiumTierCarousel from "./PremiumTierCarousel";
 import PrivilegesList from "./PrivilegesList";
 import DailyCheckin from "./DailyCheckin";
-import { Link } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
 

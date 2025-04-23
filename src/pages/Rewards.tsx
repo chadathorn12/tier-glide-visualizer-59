@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +14,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Coins, Gift, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import MainNav from "@/components/MainNav";
+import { userData, findTierById } from "@/data/tierData";
 
 interface Reward {
   id: string;
@@ -36,8 +38,11 @@ const Rewards = () => {
   const [selectedReward, setSelectedReward] = useState<Reward | null>(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [processing, setProcessing] = useState(false);
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
-  const [coinPoints, setCoinPoints] = useState<string>("0");
+  const [isDataLoaded, setIsDataLoaded] = useState(true); // Changed to true for demo
+  const [coinPoints, setCoinPoints] = useState<string>(userData.currentPoints.toString());
+  
+  // ดึงข้อมูลระดับสมาชิกปัจจุบัน
+  const currentTier = findTierById(userData.currentTier);
 
   const rewards: Reward[] = [
     {
@@ -46,7 +51,7 @@ const Rewards = () => {
       description: 'แลก LINE Melody เพลงของ BUS เพลงใดก็ได้ 1 เพลง',
       image: '/images/rewards/reward02.jpg',
       endDate: '',
-      coinCost: 430,
+      coinCost: 150,
       eventId: 'redm_02',
       goTo: 'https://docs.google.com/forms/d/',
       confirmationMessage: 'เมื่อแลกเสร็จ ระบบจะนำคุณไปยังหน้ากรอกแบบฟอร์ม',
@@ -55,6 +60,36 @@ const Rewards = () => {
       winGashapon: 0,
       gashapon: 100,
       isGashapon: false,
+    },
+    {
+      id: '3',
+      name: 'ชุดตกแต่งห้อง Digital',
+      description: 'แลก Digital Item สำหรับตกแต่งห้องในแอพฯ',
+      image: '/images/rewards/reward02.jpg',
+      endDate: '',
+      coinCost: 200,
+      eventId: 'redm_03',
+      confirmationMessage: 'ของรางวัลจะถูกส่งไปยังบัญชีของคุณภายใน 24 ชั่วโมง',
+      repeat: 'yes',
+      quantity: 0,
+      winGashapon: 0,
+      gashapon: 0,
+      isGashapon: false,
+    },
+    {
+      id: '4',
+      name: 'บัตรส่วนลด 100 บาท',
+      description: 'รับบัตรส่วนลด 100 บาท สำหรับการซื้อสินค้าครั้งถัดไป',
+      image: '/images/rewards/reward02.jpg',
+      endDate: '',
+      coinCost: 350,
+      eventId: 'redm_04',
+      confirmationMessage: 'รหัสส่วนลดจะถูกส่งไปยังอีเมลของคุณ',
+      repeat: 'yes',
+      quantity: 0,
+      winGashapon: 0,
+      gashapon: 0,
+      isGashapon: true,
     },
   ];
 
@@ -82,54 +117,135 @@ const Rewards = () => {
     }, 1500);
   };
 
+  // กำหนดสีและสไตล์ให้สอดคล้องกับระดับสมาชิก
+  const getBackgroundGradient = () => {
+    const dark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
+    
+    if (dark) {
+      switch (currentTier?.id) {
+        case "general": return "bg-gradient-to-b from-[#10162b] via-gray-950 to-[#1e293b]";
+        case "bronze": return "bg-gradient-to-b from-[#251911] via-gray-950 to-[#1e293b]";
+        case "silver": return "bg-gradient-to-b from-[#292942] via-gray-950 to-[#1e293b]";
+        case "gold": return "bg-gradient-to-b from-[#403618] via-gray-950 to-[#1e293b]";
+        case "platinum": return "bg-gradient-to-b from-[#2d3748] via-gray-950 to-[#1e293b]";
+        default: return "bg-gradient-to-b from-[#10162b] via-gray-950 to-[#1e293b]";
+      }
+    }
+    
+    switch (currentTier?.id) {
+      case "general": return "bg-gradient-to-b from-[#9ccff4] via-white to-white";
+      case "bronze": return "bg-gradient-to-b from-[#ffe2c1] via-white to-white";
+      case "silver": return "bg-gradient-to-b from-[#d7dbe7] via-white to-white";
+      case "gold": return "bg-gradient-to-b from-[#fff4c6] via-white to-white";
+      case "platinum": return "bg-gradient-to-b from-[#f5faff] via-white to-white";
+      default: return "bg-gradient-to-b from-[#9ccff4] via-white to-white";
+    }
+  };
+
+  const getCardGlassStyle = () => {
+    const dark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
+    
+    if (dark) {
+      switch (currentTier?.id) {
+        case "general": return "bg-gradient-to-br from-[#223b54]/90 to-[#2b405b]/70";
+        case "bronze": return "bg-gradient-to-br from-[#67492c]/90 to-[#47331e]/70";
+        case "silver": return "bg-gradient-to-br from-[#565775]/90 to-[#a5a5ad]/70";
+        case "gold": return "bg-gradient-to-br from-[#ad9502]/90 to-[#f6d159]/70";
+        case "platinum": return "bg-gradient-to-br from-[#a4a5ac]/90 to-[#e5e6ef]/70";
+        default: return "bg-gradient-to-br from-gray-800/90 to-gray-900/70";
+      }
+    }
+    
+    switch (currentTier?.id) {
+      case "general": return "bg-gradient-to-br from-[#e3f0ff]/95 to-[#b4deff]/80";
+      case "bronze": return "bg-gradient-to-br from-[#ffe2c1]/95 to-[#e7b892]/80";
+      case "silver": return "bg-gradient-to-br from-[#d7dbe7]/95 to-[#b2b0bc]/80";
+      case "gold": return "bg-gradient-to-br from-[#fff4c6]/95 to-[#ffeab2]/80";
+      case "platinum": return "bg-gradient-to-br from-[#f5faff]/95 to-[#dbe2ee]/80";
+      default: return "bg-gradient-to-br from-white/95 to-gray-100/80";
+    }
+  };
+
+  const getRewardCardStyle = () => {
+    return "border border-white/20 dark:border-gray-700/30 backdrop-blur-md overflow-hidden h-full";
+  };
+
+  const getButtonStyle = () => {
+    const dark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
+    
+    if (dark) {
+      switch (currentTier?.id) {
+        case "general": return "bg-blue-600 hover:bg-blue-700 text-white";
+        case "bronze": return "bg-amber-600 hover:bg-amber-700 text-white";
+        case "silver": return "bg-indigo-600 hover:bg-indigo-700 text-white";
+        case "gold": return "bg-yellow-600 hover:bg-yellow-700 text-black";
+        case "platinum": return "bg-slate-600 hover:bg-slate-700 text-white";
+        default: return "bg-blue-600 hover:bg-blue-700 text-white";
+      }
+    }
+
+    switch (currentTier?.id) {
+      case "general": return "bg-blue-500 hover:bg-blue-600 text-white";
+      case "bronze": return "bg-amber-500 hover:bg-amber-600 text-white";
+      case "silver": return "bg-indigo-500 hover:bg-indigo-600 text-white";
+      case "gold": return "bg-yellow-500 hover:bg-yellow-600 text-black";
+      case "platinum": return "bg-slate-500 hover:bg-slate-600 text-white";
+      default: return "bg-blue-500 hover:bg-blue-600 text-white";
+    }
+  };
+  
+  const getAccentColor = () => {
+    const dark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
+    
+    if (dark) {
+      switch (currentTier?.id) {
+        case "general": return "text-blue-300";
+        case "bronze": return "text-amber-300";
+        case "silver": return "text-slate-300";
+        case "gold": return "text-yellow-300";
+        case "platinum": return "text-slate-200";
+        default: return "text-blue-300";
+      }
+    }
+
+    switch (currentTier?.id) {
+      case "general": return "text-blue-600";
+      case "bronze": return "text-amber-600";
+      case "silver": return "text-slate-600";
+      case "gold": return "text-yellow-600";
+      case "platinum": return "text-slate-700";
+      default: return "text-blue-600";
+    }
+  };
+
   return (
-    <div>
+    <div className={getBackgroundGradient()}>
       <MainNav />
       
-      <main className="min-h-screen pt-20 pb-24 bg-gradient-to-b from-background to-muted">
+      <main className="min-h-screen pt-20 pb-24">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            {isDataLoaded ? (
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="w-full p-6 glass-card rounded-xl shadow-lg mb-8"
-              >
-                <div className="flex flex-col sm:flex-row justify-between items-center">
-                  <div className="text-center sm:text-left mb-4 sm:mb-0">
-                    <h5 className="text-2xl font-bold mb-2">คะแนนสะสม</h5>
-                    <p className="text-muted-foreground">ใช้คะแนนสะสมเพื่อแลกรับของรางวัลพิเศษ</p>
-                  </div>
-                  <div className="text-center sm:text-right">
-                    <div className="text-4xl font-bold mb-1">
-                      {parseInt(coinPoints).toLocaleString('en-US')}
-                    </div>
-                    <div className="flex items-center justify-center sm:justify-end text-primary">
-                      <Coins className="w-6 h-6 mr-2" />
-                      <span className="text-xl font-semibold">คะแนน</span>
-                    </div>
-                  </div>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`w-full p-6 rounded-xl shadow-lg mb-8 ${getCardGlassStyle()} border border-white/20 dark:border-gray-700/30 backdrop-blur-md`}
+            >
+              <div className="flex flex-col sm:flex-row justify-between items-center">
+                <div className="text-center sm:text-left mb-4 sm:mb-0">
+                  <h5 className="text-2xl font-bold mb-2">คะแนนสะสม</h5>
+                  <p className="text-gray-600 dark:text-gray-300">ใช้คะแนนสะสมเพื่อแลกรับของรางวัลพิเศษ</p>
                 </div>
-              </motion.div>
-            ) : (
-              <div className="w-full p-6 glass-card mb-8">
-                <div className="flex flex-col sm:flex-row justify-between items-center">
-                  <div className="text-center sm:text-left mb-4 sm:mb-0">
-                    <h5 className="text-2xl font-bold mb-2">คะแนนสะสม</h5>
-                    <p className="text-muted-foreground">ใช้คะแนนสะสมเพื่อแลกรับของรางวัลพิเศษ</p>
+                <div className="text-center sm:text-right">
+                  <div className="text-4xl font-bold mb-1">
+                    {parseInt(coinPoints).toLocaleString('en-US')}
                   </div>
-                  <div className="text-center sm:text-right">
-                    <div className="text-4xl font-bold mb-1">
-                      0
-                    </div>
-                    <div className="flex items-center justify-center sm:justify-end text-primary">
-                      <Coins className="w-6 h-6 mr-2" />
-                      <span className="text-xl font-semibold">คะแนน</span>
-                    </div>
+                  <div className={`flex items-center justify-center sm:justify-end ${getAccentColor()}`}>
+                    <Coins className="w-6 h-6 mr-2" />
+                    <span className="text-xl font-semibold">คะแนน</span>
                   </div>
                 </div>
               </div>
-            )}
+            </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {rewards.map((reward) => (
@@ -139,7 +255,7 @@ const Rewards = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Card className="overflow-hidden h-full glass-card hover:shadow-lg transition-shadow duration-200">
+                  <Card className={`${getRewardCardStyle()} shadow-lg hover:shadow-xl transition-shadow duration-200 ${getCardGlassStyle()}`}>
                     <div className="relative">
                       <img
                         src={reward.image}
@@ -147,7 +263,7 @@ const Rewards = () => {
                         className="w-full h-48 object-cover"
                       />
                       {reward.isGashapon && (
-                        <span className="absolute top-2 right-2 bg-yellow-400/90 backdrop-blur-sm text-xs font-bold px-2 py-1 rounded-full">
+                        <span className={`absolute top-2 right-2 ${getButtonStyle()} text-xs font-bold px-2 py-1 rounded-full`}>
                           Gashapon
                         </span>
                       )}
@@ -155,13 +271,13 @@ const Rewards = () => {
                     
                     <div className="p-4 flex flex-col flex-grow">
                       <h3 className="text-xl font-semibold mb-2">{reward.name}</h3>
-                      <p className="text-muted-foreground text-sm mb-4 flex-grow">
+                      <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 flex-grow">
                         {reward.description}
                       </p>
                       
                       <div className="flex items-center justify-between mt-auto">
                         <div className="flex items-center space-x-1">
-                          <Coins className="w-5 h-5 text-primary" />
+                          <Coins className={`w-5 h-5 ${getAccentColor()}`} />
                           <span className="font-bold">
                             {reward.coinCost <= 0 ? "ฟรี" : reward.coinCost}
                           </span>
@@ -169,8 +285,7 @@ const Rewards = () => {
                         
                         <Button
                           onClick={() => handleExchange(reward)}
-                          variant="default"
-                          className="space-x-2"
+                          className={`space-x-2 ${getButtonStyle()}`}
                           disabled={processing}
                         >
                           <Gift className="w-4 h-4" />
@@ -187,7 +302,7 @@ const Rewards = () => {
       </main>
 
       <Dialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
-        <DialogContent>
+        <DialogContent className={getCardGlassStyle()}>
           <DialogHeader>
             <DialogTitle>ยืนยันการแลกรางวัล</DialogTitle>
             <DialogDescription>
@@ -213,6 +328,7 @@ const Rewards = () => {
             <Button
               onClick={confirmExchange}
               disabled={processing}
+              className={getButtonStyle()}
             >
               {processing ? (
                 <div className="flex items-center space-x-2">
