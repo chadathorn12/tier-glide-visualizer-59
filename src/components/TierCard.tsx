@@ -31,6 +31,28 @@ const getRankIcon = (tierId: string) => {
   }
 };
 
+const getProgressColors = (tierId: string, dark: boolean) => {
+  if (dark) {
+    switch (tierId) {
+      case "general": return "from-[#5BA3D0] to-[#9CCEF4]";
+      case "bronze": return "from-[#9B87F5] to-[#B8A9F8]";
+      case "silver": return "from-[#FFD700] to-[#FFEB99]";
+      case "gold": return "from-[#00BFFF] to-[#87CEEB]";
+      case "platinum": return "from-[#9b87f5] to-[#B8A9F8]";
+      default: return "from-[#5BA3D0] to-[#9CCEF4]";
+    }
+  }
+  
+  switch (tierId) {
+    case "general": return "from-[#5BA3D0] to-[#9CCEF4]";
+    case "bronze": return "from-[#9B87F5] to-[#B8A9F8]";
+    case "silver": return "from-[#FFD700] to-[#FFEB99]";
+    case "gold": return "from-[#00BFFF] to-[#87CEEB]";
+    case "platinum": return "from-[#9b87f5] to-[#B8A9F8]";
+    default: return "from-[#5BA3D0] to-[#9CCEF4]";
+  }
+};
+
 const getCardMainBg = (tier: Tier, dark: boolean) => {
   if (dark) {
     switch (tier.id) {
@@ -44,7 +66,7 @@ const getCardMainBg = (tier: Tier, dark: boolean) => {
   }
   
   switch (tier.id) {
-    case "general": return "bg-gradient-to-br from-[#F1F0FB] to-[#F8F8F8]";
+    case "general": return "bg-gradient-to-br from-[#D3E4FD] to-[#F1F1F1]";
     case "bronze": return "bg-gradient-to-br from-[#C0C0C0] to-[#A9A9A9]";
     case "silver": return "bg-gradient-to-br from-[#FFD700] to-[#FFA500]";
     case "gold": return "bg-gradient-to-br from-[#B9F2FF] to-[#00BFFF]";
@@ -65,10 +87,10 @@ const TierCard = ({
 }: TierCardProps) => {
   const dark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
   const textColor = dark ? "text-white" : "text-gray-900";
-  const progressColor = dark ? "bg-blue-400" : "bg-blue-600";
+  const progressColors = getProgressColors(tier.id, dark);
   
   const calculateProgress = () => {
-    if (!pointsToNextTier) return 0;
+    if (pointsToNextTier === undefined) return 0;
     const nextTierPoints = tier.requiredPoints + pointsToNextTier;
     const currentProgress = tier.requiredPoints;
     return (currentProgress / nextTierPoints) * 100;
@@ -81,7 +103,7 @@ const TierCard = ({
       animate={{ opacity: 1, y: 0, scale: isCurrent ? 1.01 : 0.96 }}
       exit={{ opacity: 0, y: 20, scale: 0.96 }}
       className={cn(
-        "relative px-6 pt-7 pb-6 rounded-3xl shadow-xl border transition-all flex flex-col justify-between h-[280px] md:h-[300px] min-w-0 backdrop-blur-sm",
+        "relative px-6 pt-8 pb-7 rounded-3xl shadow-xl border transition-all flex flex-col justify-between h-[320px] md:h-[340px] min-w-0 backdrop-blur-sm",
         getCardMainBg(tier, dark),
         isCurrent ? "ring-2 ring-blue-300 dark:ring-blue-800 z-10" : "opacity-80",
       )}
@@ -114,10 +136,20 @@ const TierCard = ({
               </div>
               
               <div className={cn("text-sm space-y-2", textColor)}>
-                <div>{tier.requiredPoints} points required</div>
+                <div className="flex items-center justify-between">
+                  <span>{tier.requiredPoints} points required</span>
+                </div>
                 {pointsToNextTier !== undefined && (
                   <>
-                    <Progress value={calculateProgress()} className="h-2" />
+                    <div className="relative w-full h-2 rounded-full overflow-hidden bg-gray-200/50 dark:bg-gray-700/50">
+                      <div 
+                        className={cn(
+                          "absolute top-0 left-0 h-full bg-gradient-to-r transition-all",
+                          progressColors
+                        )}
+                        style={{ width: `${calculateProgress()}%` }}
+                      />
+                    </div>
                     <div className="text-xs font-medium">
                       {pointsToNextTier} points to next tier
                     </div>
@@ -156,3 +188,4 @@ const TierCard = ({
 };
 
 export default TierCard;
+
