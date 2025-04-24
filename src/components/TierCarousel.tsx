@@ -96,6 +96,7 @@ const TierCarousel = ({
                 onUpgrade={() => onUpgrade(selectedTier.id)}
                 walletId={walletId}
                 pointsToNextTier={isCurrentTierSelected ? pointsToNextTier : undefined}
+                currentPoints={currentPoints}
               />
             </AnimatePresence>
           </motion.div>

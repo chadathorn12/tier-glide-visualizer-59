@@ -19,6 +19,7 @@ interface TierCardProps {
   canUpgrade: boolean;
   walletId: string;
   pointsToNextTier?: number;
+  currentPoints: number; // Add this to access the user's current points
 }
 
 const getRankIcon = (tierId: string) => {
@@ -85,35 +86,39 @@ const TierCard = ({
   canUpgrade,
   walletId,
   pointsToNextTier,
+  currentPoints,
 }: TierCardProps) => {
   const dark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
   const textColor = dark ? "text-white" : "text-gray-900";
   const progressColors = getProgressColors(tier.id, dark);
   
+  // Calculate progress based on whether this is current tier or not
   const calculateProgress = () => {
-    const currentPoints = pointsToNextTier !== undefined 
-      ? tier.requiredPoints - pointsToNextTier
-      : 0;
-      
     if (isCurrentTier && pointsToNextTier !== undefined) {
+      // For current tier: Show progress towards next tier
       const nextTierPoints = tier.requiredPoints + pointsToNextTier;
-      return ((nextTierPoints - pointsToNextTier - tier.requiredPoints) / 
-              (nextTierPoints - tier.requiredPoints)) * 100;
+      // Calculate percentage of progress from current tier to next tier
+      return (currentPoints - tier.requiredPoints) / pointsToNextTier * 100;
+    } else {
+      // For other tiers: Show progress towards this tier
+      // If current points are less than required, show relative progress
+      if (currentPoints < tier.requiredPoints) {
+        return (currentPoints / tier.requiredPoints) * 100;
+      }
+      // If user has already reached this tier's requirements, show 100%
+      return 100;
     }
-    
-    return (currentPoints / tier.requiredPoints) * 100;
   };
 
+  // Get the display text for the progress
   const getProgressText = () => {
-    const currentPoints = pointsToNextTier !== undefined 
-      ? tier.requiredPoints - pointsToNextTier
-      : 0;
-      
     if (isCurrentTier && pointsToNextTier !== undefined) {
+      // For current tier, show points needed for next tier
       return `${pointsToNextTier} points to next tier`;
+    } else {
+      // For other tiers, show current points vs required points
+      return `${Math.min(currentPoints, tier.requiredPoints)}/${tier.requiredPoints} points`;
     }
-    
-    return `${currentPoints}/${tier.requiredPoints} points`;
   };
 
   return (
@@ -123,7 +128,7 @@ const TierCard = ({
       animate={{ opacity: 1, y: 0, scale: isCurrent ? 1.01 : 0.96 }}
       exit={{ opacity: 0, y: 20, scale: 0.96 }}
       className={cn(
-        "relative px-6 pt-8 pb-7 rounded-3xl shadow-xl border transition-all flex flex-col justify-between h-[300px] md:h-[320px] min-w-0 backdrop-blur-sm mx-auto",
+        "relative px-6 pt-8 pb-7 rounded-3xl shadow-xl border transition-all flex flex-col justify-between h-[280px] md:h-[300px] min-w-0 backdrop-blur-sm mx-auto",
         getCardMainBg(tier, dark),
         isCurrent ? "ring-2 ring-blue-300 dark:ring-blue-800 z-10" : "opacity-80",
       )}
