@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import MembershipTier from "@/components/MembershipTier";
 import { Moon, Sun } from "lucide-react";
@@ -32,29 +33,8 @@ const Index = () => {
     document.documentElement.classList.toggle("dark", newTheme === "dark");
   };
   
-  const getBackgroundGradient = () => {
-    const dark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
-    
-    if (dark) {
-      switch (selectedTier.id) {
-        case "general": return "bg-gradient-to-b from-[#5BA3D0]/30 via-gray-950 to-[#1e293b]";
-        case "bronze": return "bg-gradient-to-b from-[#C0C0C0]/30 via-gray-950 to-[#1e293b]";
-        case "silver": return "bg-gradient-to-b from-[#FFD700]/30 via-gray-950 to-[#1e293b]";
-        case "gold": return "bg-gradient-to-b from-[#00BFFF]/30 via-gray-950 to-[#1e293b]";
-        case "platinum": return "bg-gradient-to-b from-[#9b87f5]/30 via-gray-950 to-[#1e293b]";
-        default: return "bg-gradient-to-b from-[#5BA3D0]/30 via-gray-950 to-[#1e293b]";
-      }
-    }
-    
-    switch (selectedTier.id) {
-      case "general": return "bg-gradient-to-b from-[#D3E4FD] via-[#F2F6FD] to-white";
-      case "bronze": return "bg-gradient-to-b from-[#F1E4D3] via-[#F8F3EC] to-white";
-      case "silver": return "bg-gradient-to-b from-[#F8F2D1] via-[#FDF6E5] to-white";
-      case "gold": return "bg-gradient-to-b from-[#E6F3FF] via-[#F5F9FF] to-white";
-      case "platinum": return "bg-gradient-to-b from-[#F1EDFF] via-[#F8F6FF] to-white";
-      default: return "bg-gradient-to-b from-[#D3E4FD] via-[#F2F6FD] to-white";
-    }
-  };
+  // Removing the getBackgroundGradient function since it's not needed in this file
+  // It seems like it was incorrectly added here, but it should be in the MembershipTier component
 
   return (
     <div className={theme}>
