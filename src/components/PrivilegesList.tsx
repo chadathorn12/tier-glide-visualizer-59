@@ -55,22 +55,22 @@ const PrivilegesList = ({ tier, isLocked }: PrivilegesListProps) => {
     
     if (dark) {
       switch (tier.id) {
-        case "general": return "text-blue-300";
-        case "bronze": return "text-amber-300";
-        case "silver": return "text-slate-300";
-        case "gold": return "text-yellow-300";
-        case "platinum": return "text-slate-200";
-        default: return "text-blue-300";
+        case "general": return "from-[#8BC5E3] to-[#B6E3F7]";
+        case "bronze": return "from-[#C5C5C5] to-[#EBEBEB]";
+        case "silver": return "from-[#FFD700] to-[#FFF3B8]";
+        case "gold": return "from-[#4FC3F7] to-[#81D4FA]";
+        case "platinum": return "from-[#B388FF] to-[#E1BEE7]";
+        default: return "from-[#8BC5E3] to-[#B6E3F7]";
       }
     }
 
     switch (tier.id) {
-      case "general": return "text-blue-600";
-      case "bronze": return "text-amber-600";
-      case "silver": return "text-slate-600";
-      case "gold": return "text-yellow-600";
-      case "platinum": return "text-slate-700";
-      default: return "text-blue-600";
+      case "general": return "from-[#5BA3D0] to-[#9CCEF4]";
+      case "bronze": return "from-[#C0C0C0] to-[#E6E8E6]";
+      case "silver": return "from-[#FFD700] to-[#FFEB99]";
+      case "gold": return "from-[#00BFFF] to-[#87CEEB]";
+      case "platinum": return "from-[#9b87f5] to-[#B8A9F8]";
+      default: return "from-[#5BA3D0] to-[#9CCEF4]";
     }
   };
   
@@ -79,22 +79,22 @@ const PrivilegesList = ({ tier, isLocked }: PrivilegesListProps) => {
     
     if (dark) {
       switch (tier.id) {
-        case "general": return "bg-blue-900/60";
-        case "bronze": return "bg-amber-900/60";
-        case "silver": return "bg-slate-700/60";
-        case "gold": return "bg-yellow-900/60";
-        case "platinum": return "bg-slate-700/60";
-        default: return "bg-blue-900/60";
+        case "general": return "bg-[#5B9AC7]/40";
+        case "bronze": return "bg-[#9E9E9E]/40";
+        case "silver": return "bg-[#FFD700]/40";
+        case "gold": return "bg-[#039BE5]/40";
+        case "platinum": return "bg-[#9575CD]/40";
+        default: return "bg-[#5B9AC7]/40";
       }
     }
 
     switch (tier.id) {
-      case "general": return "bg-blue-200";
-      case "bronze": return "bg-amber-200";
-      case "silver": return "bg-slate-200";
-      case "gold": return "bg-yellow-200";
-      case "platinum": return "bg-slate-200";
-      default: return "bg-blue-200";
+      case "general": return "bg-[#8BC5E3]";
+      case "bronze": return "bg-[#C5C5C5]";
+      case "silver": return "bg-[#FFD700]";
+      case "gold": return "bg-[#4FC3F7]";
+      case "platinum": return "bg-[#B388FF]";
+      default: return "bg-[#8BC5E3]";
     }
   };
 
@@ -103,22 +103,22 @@ const PrivilegesList = ({ tier, isLocked }: PrivilegesListProps) => {
     
     if (dark) {
       switch (tier.id) {
-        case "general": return "bg-blue-500";
-        case "bronze": return "bg-amber-500";
-        case "silver": return "bg-slate-400";
-        case "gold": return "bg-yellow-500";
-        case "platinum": return "bg-slate-400";
-        default: return "bg-blue-500";
+        case "general": return "bg-[#B6E3F7]";
+        case "bronze": return "bg-[#EBEBEB]";
+        case "silver": return "bg-[#FFF3B8]";
+        case "gold": return "bg-[#81D4FA]";
+        case "platinum": return "bg-[#E1BEE7]";
+        default: return "bg-[#B6E3F7]";
       }
     }
 
     switch (tier.id) {
-      case "general": return "bg-blue-500";
-      case "bronze": return "bg-amber-500";
-      case "silver": return "bg-slate-500";
-      case "gold": return "bg-yellow-500";
-      case "platinum": return "bg-slate-500";
-      default: return "bg-blue-500";
+      case "general": return "bg-[#9CCEF4]";
+      case "bronze": return "bg-[#E6E8E6]";
+      case "silver": return "bg-[#FFEB99]";
+      case "gold": return "bg-[#87CEEB]";
+      case "platinum": return "bg-[#B8A9F8]";
+      default: return "bg-[#9CCEF4]";
     }
   };
 
@@ -127,7 +127,7 @@ const PrivilegesList = ({ tier, isLocked }: PrivilegesListProps) => {
       <div className="text-center">
         <h2 
           className={cn(
-            "text-3xl font-bold mb-2", 
+            "text-3xl font-bold mb-2 bg-gradient-to-r bg-clip-text text-transparent", 
             getHeaderColor(tier)
           )}
         >
@@ -152,7 +152,7 @@ const PrivilegesList = ({ tier, isLocked }: PrivilegesListProps) => {
           >
             <div 
               className={cn(
-                "relative mb-4 rounded-full p-5 flex items-center justify-center shadow-lg",
+                "relative mb-4 rounded-full p-5 flex items-center justify-center shadow-lg backdrop-blur-sm",
                 getIconBgColor(tier)
               )}
             >
