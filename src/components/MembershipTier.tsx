@@ -6,6 +6,7 @@ import PrivilegesList from "./PrivilegesList";
 import DailyCheckin from "./DailyCheckin";
 import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
 
 const MembershipTier = () => {
   const { toast } = useToast();
@@ -59,46 +60,90 @@ const MembershipTier = () => {
   const isCurrentTierSelected = selectedTierId === userData.currentTier;
   const isLocked = userData.currentPoints < selectedTier.requiredPoints;
 
-  const getBackgroundGradient = () => {
-    const dark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
-    
-    if (dark) {
-      switch (selectedTier.id) {
-        case "general": return "bg-gradient-to-b from-[#5BA3D0]/30 via-gray-950 to-[#1e293b]";
-        case "bronze": return "bg-gradient-to-b from-[#C0C0C0]/30 via-gray-950 to-[#1e293b]";
-        case "silver": return "bg-gradient-to-b from-[#FFD700]/30 via-gray-950 to-[#1e293b]";
-        case "gold": return "bg-gradient-to-b from-[#00BFFF]/30 via-gray-950 to-[#1e293b]";
-        case "platinum": return "bg-gradient-to-b from-[#9b87f5]/30 via-gray-950 to-[#1e293b]";
-        default: return "bg-gradient-to-b from-[#5BA3D0]/30 via-gray-950 to-[#1e293b]";
-      }
-    }
-    
-    // New light mode gradients - very soft, pastel, fading to white
-    switch (selectedTier.id) {
-      case "general": return "bg-gradient-to-b from-[#F2FCE2]/50 via-[#F2FCE2]/20 to-white";
-      case "bronze": return "bg-gradient-to-b from-[#FEC6A1]/50 via-[#FEC6A1]/20 to-white";
-      case "silver": return "bg-gradient-to-b from-[#F1F0FB]/50 via-[#F1F0FB]/20 to-white";
-      case "gold": return "bg-gradient-to-b from-[#FEF7CD]/50 via-[#FEF7CD]/20 to-white";
-      case "platinum": return "bg-gradient-to-b from-[#FFDEE2]/50 via-[#FFDEE2]/20 to-white";
-      default: return "bg-gradient-to-b from-[#D3E4FD]/50 via-[#D3E4FD]/20 to-white";
-    }
-  };
-
   return (
-    <div className={`min-h-screen ${getBackgroundGradient()} flex flex-col items-center transition-colors duration-700`}>
-      <div className="relative w-full flex-shrink-0" style={{height: 120}}>
-        <div className="absolute inset-0 z-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:from-blue-900/40 dark:to-purple-900/40" />
-        <div className="relative z-10 flex flex-col items-center justify-center h-full pt-6">
-          <h1 className="text-2xl md:text-3xl font-extrabold text-gray-800 dark:text-white drop-shadow-md">
-            ระดับสมาชิก
-          </h1>
-          <p className="mt-2 text-lg font-medium text-gray-600 dark:text-gray-300">
-            Current Points: {userData.currentPoints}
-          </p>
+    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white dark:from-purple-900 dark:via-purple-800/80 dark:to-violet-900">
+      {/* Top navigation bar */}
+      <div className="relative h-16 flex items-center px-4 bg-gradient-to-r from-purple-600 to-violet-600 dark:from-purple-800 dark:to-violet-800">
+        <button className="text-white">
+          <ArrowLeft className="h-6 w-6" />
+        </button>
+        <h1 className="absolute left-1/2 -translate-x-1/2 text-xl font-bold text-white">
+          ระดับสมาชิก
+        </h1>
+        <div className="ml-auto text-white">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="5" cy="12" r="2" fill="currentColor"/>
+            <circle cx="12" cy="12" r="2" fill="currentColor"/>
+            <circle cx="19" cy="12" r="2" fill="currentColor"/>
+          </svg>
         </div>
       </div>
 
-      <div className="w-full flex flex-col items-center z-20 pb-2 px-2 md:px-0">
+      {/* Current tier display card */}
+      <div className="w-full px-4 pt-4">
+        <div className="relative w-full rounded-3xl overflow-hidden bg-gradient-to-br from-purple-500 to-violet-600 dark:from-purple-600 dark:to-violet-800 shadow-xl">
+          <div className="absolute top-0 left-0 p-3">
+            <div className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-medium text-white">
+              {isLocked ? "ยังไม่บรรลุ" : "บรรลุแล้ว"}
+            </div>
+          </div>
+          
+          <div className="p-6 pb-20">
+            <div className="flex justify-between items-start">
+              <div>
+                <h2 className="text-3xl font-bold text-white mb-1">
+                  {selectedTier.name}
+                </h2>
+                <div className="text-xs text-white/80 mb-4">
+                  รหัสกระเป๋าเงิน <span className="ml-1">{userData.walletId}</span>
+                </div>
+                
+                <div className="flex flex-col gap-1 mt-3">
+                  <div className="flex justify-between text-xs text-white">
+                    <span>Points required</span>
+                    <span>{selectedTier.requiredPoints}</span>
+                  </div>
+                  <div className="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-white"
+                      style={{ width: `${Math.min(100, (userData.currentPoints / selectedTier.requiredPoints) * 100)}%` }}
+                    ></div>
+                  </div>
+                  <div className="text-xs text-white/80">
+                    {isCurrentTierSelected && pointsToNextTier > 0 ? 
+                      `继续加油升到该等级 (${pointsToNextTier} points to go)` :
+                      `${Math.min(userData.currentPoints, selectedTier.requiredPoints)}/${selectedTier.requiredPoints} points`
+                    }
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex-shrink-0">
+                <div className="w-24 h-24 flex items-center justify-center">
+                  <img
+                    src={`/lovable-uploads/ba099b9e-cdcb-4b17-8060-c7137e047123.png`}
+                    alt={`${selectedTier.name} badge`}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="absolute bottom-0 right-0 p-4">
+            <button
+              onClick={() => handleUpgrade(selectedTier.id)}
+              disabled={!canUpgradeToTier(userData.currentPoints, userData.currentTier, selectedTier.id)}
+              className="px-6 py-2.5 rounded-full bg-white text-purple-700 font-medium shadow-lg disabled:opacity-60"
+            >
+              去升级
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Tier selection carousel */}
+      <div className="w-full px-4 mt-6">
         <PremiumTierCarousel
           tiers={tiers}
           currentTierId={userData.currentTier}
@@ -109,15 +154,20 @@ const MembershipTier = () => {
           selectedTierId={selectedTierId}
         />
       </div>
-
-      <div className="w-full max-w-2xl mx-auto mt-2 md:mt-8 z-10">
+      
+      {/* Privileges section */}
+      <div className="w-full px-4 mt-6">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">
+          我的{selectedTier.name}会员权益
+        </h2>
         <PrivilegesList 
           tier={selectedTier} 
           isLocked={isLocked && !isCurrentTierSelected} 
         />
       </div>
 
-      <div className="w-full max-w-4xl mx-auto px-4 mb-8 z-20">
+      {/* Daily check-in section */}
+      <div className="w-full px-4 mb-8">
         <DailyCheckin />
       </div>
     </div>

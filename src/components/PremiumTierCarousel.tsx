@@ -56,7 +56,7 @@ const PremiumTierCarousel = ({
   }, [api, tiers, onTierChange]);
 
   return (
-    <div className="w-full max-w-3xl mx-auto relative py-10">
+    <div className="w-full relative py-4">
       <Carousel
         opts={{
           align: "center",
@@ -67,8 +67,7 @@ const PremiumTierCarousel = ({
         setApi={setApi}
         className="w-full"
       >
-        {/* Cards content */}
-        <CarouselContent className="h-[380px] md:h-[400px] py-10">
+        <CarouselContent className="py-4">
           {tiers.map((tier, i) => {
             // Compute locked and upgrade status
             const isLocked = currentPoints < tier.requiredPoints;
@@ -88,7 +87,7 @@ const PremiumTierCarousel = ({
             return (
               <CarouselItem 
                 key={tier.id}
-                className={cn("w-[87vw] sm:w-[380px] md:w-[400px] max-w-lg px-4 transition-transform duration-700")}
+                className="w-[75vw] sm:w-[300px] max-w-lg px-2"
               >
                 <TierCard
                   tier={tier}
@@ -106,18 +105,18 @@ const PremiumTierCarousel = ({
           })}
         </CarouselContent>
       </Carousel>
-      {/* Indicator dots */}
-      <div className="flex justify-center mt-5 space-x-2">
+      
+      <div className="flex justify-center mt-2 space-x-1.5">
         {tiers.map((tier, idx) => (
           <button
             key={tier.id}
             aria-label={`Go to ${tier.name} tier`}
             onClick={() => api && api.scrollTo(idx)}
             className={cn(
-              "w-2.5 h-2.5 rounded-full transition-all duration-300",
+              "w-2 h-2 rounded-full transition-all duration-300",
               selectedIdx === idx
-                ? "bg-blue-500 dark:bg-[#bdd0f6] scale-125 shadow ring-2 ring-blue-100"
-                : "bg-blue-100 dark:bg-gray-700"
+                ? "bg-violet-500 scale-125"
+                : "bg-gray-300 dark:bg-gray-600"
             )}
           />
         ))}
