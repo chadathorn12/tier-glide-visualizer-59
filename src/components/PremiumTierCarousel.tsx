@@ -56,7 +56,7 @@ const PremiumTierCarousel = ({
   }, [api, tiers, onTierChange]);
 
   return (
-    <div className="w-full max-w-3xl mx-auto relative">
+    <div className="w-full max-w-3xl mx-auto relative py-10">
       <Carousel
         opts={{
           align: "center",
@@ -68,7 +68,7 @@ const PremiumTierCarousel = ({
         className="w-full"
       >
         {/* Cards content */}
-        <CarouselContent className="h-[260px] md:h-[280px]">
+        <CarouselContent className="h-[380px] md:h-[400px] py-10">
           {tiers.map((tier, i) => {
             // Compute locked and upgrade status
             const isLocked = currentPoints < tier.requiredPoints;
@@ -76,8 +76,14 @@ const PremiumTierCarousel = ({
               currentPoints >= tier.requiredPoints && 
               tiers.indexOf(tier) > tiers.findIndex((t) => t.id === currentTierId);
             const isCurrentTier = tier.id === currentTierId;
+            // Calculate points to next tier specifically for this tier
+            const nextTierForThis = tiers[i + 1];
+            const pointsToNextForThis = nextTierForThis 
+              ? Math.max(0, nextTierForThis.requiredPoints - currentPoints)
+              : undefined;
+            
             // Only current card shows pointsToNextTier
-            const showPointsToNext = tier.id === selectedTierId && pointsToNextTier !== undefined;
+            const showPointsToNext = tier.id === selectedTierId && i < tiers.length - 1;
 
             return (
               <CarouselItem 
@@ -92,7 +98,7 @@ const PremiumTierCarousel = ({
                   canUpgrade={canUpgrade}
                   onUpgrade={() => onUpgrade(tier.id)}
                   walletId={walletId}
-                  pointsToNextTier={showPointsToNext ? pointsToNextTier : undefined}
+                  pointsToNextTier={showPointsToNext ? pointsToNextForThis : undefined}
                 />
               </CarouselItem>
             );

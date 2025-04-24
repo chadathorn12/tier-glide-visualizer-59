@@ -3,11 +3,13 @@ import { Tier } from "../data/tierData";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
-import normalRank from "../assets/ranks/normal.png";
-import silverRank from "../assets/ranks/silver.png";
-import goldRank from "../assets/ranks/gold.png";
-import diamondRank from "../assets/ranks/diamond.png";
-import platinumRank from "../assets/ranks/platinum.png";
+
+// Import the newly uploaded rank icons
+import normalIcon from "public/lovable-uploads/c2b4907d-5368-428e-980d-53ee99a3c011.png";
+import silverIcon from "public/lovable-uploads/efb1d4c3-9a46-44ff-9201-14fea2e980c9.png";
+import goldIcon from "public/lovable-uploads/9c887168-f0e1-4e62-8a93-f1fc3dc53b25.png";
+import diamondIcon from "public/lovable-uploads/25d53559-7bd4-4110-a2be-951fd600d389.png";
+import platinumIcon from "public/lovable-uploads/64636113-ef4a-4083-a859-21f73e955dce.png";
 
 interface TierCardProps {
   tier: Tier;
@@ -22,12 +24,12 @@ interface TierCardProps {
 
 const getRankIcon = (tierId: string) => {
   switch (tierId) {
-    case "general": return normalRank;
-    case "bronze": return silverRank;
-    case "silver": return goldRank;
-    case "gold": return diamondRank;
-    case "platinum": return platinumRank;
-    default: return normalRank;
+    case "general": return normalIcon;
+    case "bronze": return silverIcon;
+    case "silver": return goldIcon;
+    case "gold": return diamondIcon;
+    case "platinum": return platinumIcon;
+    default: return normalIcon;
   }
 };
 
@@ -35,7 +37,7 @@ const getProgressColors = (tierId: string, dark: boolean) => {
   if (dark) {
     switch (tierId) {
       case "general": return "from-[#5BA3D0] to-[#9CCEF4]";
-      case "bronze": return "from-[#9B87F5] to-[#B8A9F8]";
+      case "bronze": return "from-[#C0C0C0] to-[#E6E8E6]";
       case "silver": return "from-[#FFD700] to-[#FFEB99]";
       case "gold": return "from-[#00BFFF] to-[#87CEEB]";
       case "platinum": return "from-[#9b87f5] to-[#B8A9F8]";
@@ -45,7 +47,7 @@ const getProgressColors = (tierId: string, dark: boolean) => {
   
   switch (tierId) {
     case "general": return "from-[#5BA3D0] to-[#9CCEF4]";
-    case "bronze": return "from-[#9B87F5] to-[#B8A9F8]";
+    case "bronze": return "from-[#C0C0C0] to-[#E6E8E6]";
     case "silver": return "from-[#FFD700] to-[#FFEB99]";
     case "gold": return "from-[#00BFFF] to-[#87CEEB]";
     case "platinum": return "from-[#9b87f5] to-[#B8A9F8]";
@@ -56,21 +58,21 @@ const getProgressColors = (tierId: string, dark: boolean) => {
 const getCardMainBg = (tier: Tier, dark: boolean) => {
   if (dark) {
     switch (tier.id) {
-      case "general": return "bg-gradient-to-br from-[#e3f0ff]/20 to-[#b4deff]/20";
-      case "bronze": return "bg-gradient-to-br from-[#C0C0C0]/20 to-[#808080]/20";
-      case "silver": return "bg-gradient-to-br from-[#FFD700]/20 to-[#FFA500]/20";
-      case "gold": return "bg-gradient-to-br from-[#B9F2FF]/20 to-[#00BFFF]/20";
-      case "platinum": return "bg-gradient-to-br from-[#E5DEFF]/20 to-[#9b87f5]/20";
+      case "general": return "bg-gradient-to-br from-[#8BCDFF]/20 to-[#D3E4FD]/20";
+      case "bronze": return "bg-gradient-to-br from-[#E6E8E6]/20 to-[#C0C0C0]/20";
+      case "silver": return "bg-gradient-to-br from-[#FFE55C]/20 to-[#FFD700]/20";
+      case "gold": return "bg-gradient-to-br from-[#5FD4FF]/20 to-[#00BFFF]/20";
+      case "platinum": return "bg-gradient-to-br from-[#BE9BFF]/20 to-[#9b87f5]/20";
       default: return "bg-gradient-to-br from-gray-800/20 to-gray-900/20";
     }
   }
   
   switch (tier.id) {
-    case "general": return "bg-gradient-to-br from-[#D3E4FD] to-[#F1F1F1]";
-    case "bronze": return "bg-gradient-to-br from-[#C0C0C0] to-[#A9A9A9]";
-    case "silver": return "bg-gradient-to-br from-[#FFD700] to-[#FFA500]";
-    case "gold": return "bg-gradient-to-br from-[#B9F2FF] to-[#00BFFF]";
-    case "platinum": return "bg-gradient-to-br from-[#E5DEFF] to-[#9b87f5]";
+    case "general": return "bg-gradient-to-br from-[#8BCDFF] to-[#D3E4FD]";
+    case "bronze": return "bg-gradient-to-br from-[#E6E8E6] to-[#C0C0C0]";
+    case "silver": return "bg-gradient-to-br from-[#FFE55C] to-[#FFD700]";
+    case "gold": return "bg-gradient-to-br from-[#5FD4FF] to-[#00BFFF]";
+    case "platinum": return "bg-gradient-to-br from-[#BE9BFF] to-[#9b87f5]";
     default: return "bg-gradient-to-br from-white to-gray-100";
   }
 };
@@ -91,9 +93,14 @@ const TierCard = ({
   
   const calculateProgress = () => {
     if (pointsToNextTier === undefined) return 0;
+    
     const nextTierPoints = tier.requiredPoints + pointsToNextTier;
-    const currentProgress = tier.requiredPoints;
-    return (currentProgress / nextTierPoints) * 100;
+    const currentUserPoints = nextTierPoints - pointsToNextTier;
+    const progressPercentage = ((currentUserPoints - tier.requiredPoints) / 
+                              (nextTierPoints - tier.requiredPoints)) * 100;
+                              
+    // Ensure progress is between 0 and 100
+    return Math.max(0, Math.min(100, progressPercentage));
   };
 
   return (
@@ -103,11 +110,12 @@ const TierCard = ({
       animate={{ opacity: 1, y: 0, scale: isCurrent ? 1.01 : 0.96 }}
       exit={{ opacity: 0, y: 20, scale: 0.96 }}
       className={cn(
-        "relative px-6 pt-8 pb-7 rounded-3xl shadow-xl border transition-all flex flex-col justify-between h-[320px] md:h-[340px] min-w-0 backdrop-blur-sm",
+        "relative px-6 pt-8 pb-7 rounded-3xl shadow-xl border transition-all flex flex-col justify-between h-[340px] md:h-[360px] min-w-0 backdrop-blur-sm mx-auto",
         getCardMainBg(tier, dark),
         isCurrent ? "ring-2 ring-blue-300 dark:ring-blue-800 z-10" : "opacity-80",
       )}
       style={{
+        maxWidth: "90%",
         boxShadow: isCurrent
           ? "0 12px 36px 0 rgba(33, 70, 184, 0.15), 0 1.5px 6px 0 rgba(57, 78, 120, 0.06)"
           : "0 4px 16px 0 rgba(60, 56, 72, 0.09)",
@@ -188,4 +196,3 @@ const TierCard = ({
 };
 
 export default TierCard;
-

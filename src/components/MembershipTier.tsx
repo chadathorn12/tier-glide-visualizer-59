@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { Tier, userData, tiers, findTierById, getNextTier, canUpgradeToTier } from "../data/tierData";
 import PremiumTierCarousel from "./PremiumTierCarousel";
@@ -63,22 +64,22 @@ const MembershipTier = () => {
     
     if (dark) {
       switch (selectedTier.id) {
-        case "general": return "bg-gradient-to-b from-[#D3E4FD]/20 via-gray-950 to-[#1e293b]";
-        case "bronze": return "bg-gradient-to-b from-[#C0C0C0]/20 via-gray-950 to-[#1e293b]";
-        case "silver": return "bg-gradient-to-b from-[#FFD700]/20 via-gray-950 to-[#1e293b]";
-        case "gold": return "bg-gradient-to-b from-[#00BFFF]/20 via-gray-950 to-[#1e293b]";
-        case "platinum": return "bg-gradient-to-b from-[#9b87f5]/20 via-gray-950 to-[#1e293b]";
-        default: return "bg-gradient-to-b from-[#D3E4FD]/20 via-gray-950 to-[#1e293b]";
+        case "general": return "bg-gradient-to-b from-[#5BA3D0]/30 via-gray-950 to-[#1e293b]";
+        case "bronze": return "bg-gradient-to-b from-[#C0C0C0]/30 via-gray-950 to-[#1e293b]";
+        case "silver": return "bg-gradient-to-b from-[#FFD700]/30 via-gray-950 to-[#1e293b]";
+        case "gold": return "bg-gradient-to-b from-[#00BFFF]/30 via-gray-950 to-[#1e293b]";
+        case "platinum": return "bg-gradient-to-b from-[#9b87f5]/30 via-gray-950 to-[#1e293b]";
+        default: return "bg-gradient-to-b from-[#5BA3D0]/30 via-gray-950 to-[#1e293b]";
       }
     }
     
     switch (selectedTier.id) {
-      case "general": return "bg-gradient-to-b from-[#D3E4FD] via-white to-white";
-      case "bronze": return "bg-gradient-to-b from-[#C0C0C0] via-white to-white";
-      case "silver": return "bg-gradient-to-b from-[#FFD700] via-white to-white";
-      case "gold": return "bg-gradient-to-b from-[#B9F2FF] via-white to-white";
-      case "platinum": return "bg-gradient-to-b from-[#E5DEFF] via-white to-white";
-      default: return "bg-gradient-to-b from-[#D3E4FD] via-white to-white";
+      case "general": return "bg-gradient-to-b from-[#8BCDFF] via-[#D3E4FD]/70 to-white";
+      case "bronze": return "bg-gradient-to-b from-[#E6E8E6] via-[#C0C0C0]/70 to-white";
+      case "silver": return "bg-gradient-to-b from-[#FFE55C] via-[#FFD700]/70 to-white";
+      case "gold": return "bg-gradient-to-b from-[#5FD4FF] via-[#00BFFF]/70 to-white";
+      case "platinum": return "bg-gradient-to-b from-[#BE9BFF] via-[#9b87f5]/70 to-white";
+      default: return "bg-gradient-to-b from-[#8BCDFF] via-[#D3E4FD]/70 to-white";
     }
   };
 
@@ -104,7 +105,6 @@ const MembershipTier = () => {
           currentPoints={userData.currentPoints}
           onTierChange={handleTierChange}
           onUpgrade={handleUpgrade}
-          pointsToNextTier={pointsToNextTier}
           selectedTierId={selectedTierId}
         />
       </div>

@@ -1,3 +1,4 @@
+
 // Membership tier data
 export interface Privilege {
   id: string;
@@ -45,7 +46,7 @@ export const tiers: Tier[] = [
       secondary: "#9CCEF4",
       tertiary: "#D1E8F8",
       accent: "#E3E3E3",
-      background: "linear-gradient(135deg, #D3E4FD 0%, #F1F1F1 100%)",
+      background: "linear-gradient(135deg, #8BCDFF 0%, #D3E4FD 100%)",
     },
     icon: "shield",
     privileges: [
@@ -74,11 +75,11 @@ export const tiers: Tier[] = [
     name: "Silver",
     requiredPoints: 100,
     colors: {
-      primary: "#9B87F5",
-      secondary: "#B8A9F8",
-      tertiary: "#E5DEFF",
+      primary: "#C0C0C0",
+      secondary: "#E6E8E6",
+      tertiary: "#F5F5F5",
       accent: "#808080",
-      background: "linear-gradient(135deg, #C0C0C0 0%, #A9A9A9 100%)",
+      background: "linear-gradient(135deg, #E6E8E6 0%, #C0C0C0 100%)",
     },
     icon: "shield-check",
     privileges: [
@@ -123,7 +124,7 @@ export const tiers: Tier[] = [
       secondary: "#FFEB99",
       tertiary: "#FFF8D9",
       accent: "#B8860B",
-      background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
+      background: "linear-gradient(135deg, #FFE55C 0%, #FFD700 100%)",
     },
     icon: "diamond",
     privileges: [
@@ -180,7 +181,7 @@ export const tiers: Tier[] = [
       secondary: "#87CEEB",
       tertiary: "#B9F2FF",
       accent: "#4682B4",
-      background: "linear-gradient(135deg, #B9F2FF 0%, #00BFFF 100%)",
+      background: "linear-gradient(135deg, #5FD4FF 0%, #00BFFF 100%)",
     },
     icon: "star",
     privileges: [
@@ -237,7 +238,7 @@ export const tiers: Tier[] = [
       secondary: "#B8A9F8",
       tertiary: "#E5DEFF",
       accent: "#7E69AB",
-      background: "linear-gradient(135deg, #E5DEFF 0%, #9b87f5 100%)",
+      background: "linear-gradient(135deg, #BE9BFF 0%, #9b87f5 100%)",
     },
     icon: "medal",
     privileges: [
