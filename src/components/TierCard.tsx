@@ -4,12 +4,12 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
 
-// Import the newly uploaded rank icons
-import normalIcon from "public/lovable-uploads/c2b4907d-5368-428e-980d-53ee99a3c011.png";
-import silverIcon from "public/lovable-uploads/efb1d4c3-9a46-44ff-9201-14fea2e980c9.png";
-import goldIcon from "public/lovable-uploads/9c887168-f0e1-4e62-8a93-f1fc3dc53b25.png";
-import diamondIcon from "public/lovable-uploads/25d53559-7bd4-4110-a2be-951fd600d389.png";
-import platinumIcon from "public/lovable-uploads/64636113-ef4a-4083-a859-21f73e955dce.png";
+// Import the rank icons correctly
+import normalIcon from "../assets/ranks/normal.png";
+import silverIcon from "../assets/ranks/silver.png"; 
+import goldIcon from "../assets/ranks/gold.png";
+import diamondIcon from "../assets/ranks/diamond.png";
+import platinumIcon from "../assets/ranks/platinum.png";
 
 interface TierCardProps {
   tier: Tier;
