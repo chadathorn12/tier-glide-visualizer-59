@@ -2,7 +2,6 @@
 import { Tier } from "../data/tierData";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Progress } from "@/components/ui/progress";
 
 // Import the rank icons correctly
 import normalIcon from "../assets/ranks/normal.png";
@@ -36,43 +35,43 @@ const getRankIcon = (tierId: string) => {
 const getProgressColors = (tierId: string, dark: boolean) => {
   if (dark) {
     switch (tierId) {
-      case "general": return "from-[#5BA3D0] to-[#9CCEF4]";
-      case "bronze": return "from-[#C0C0C0] to-[#E6E8E6]";
-      case "silver": return "from-[#FFD700] to-[#FFEB99]";
-      case "gold": return "from-[#00BFFF] to-[#87CEEB]";
-      case "platinum": return "from-[#9b87f5] to-[#B8A9F8]";
-      default: return "from-[#5BA3D0] to-[#9CCEF4]";
+      case "general": return "from-[#8BC5E3] to-[#B6E3F7]";
+      case "bronze": return "from-[#C5C5C5] to-[#EBEBEB]";
+      case "silver": return "from-[#FFD700] to-[#FFF3B8]";
+      case "gold": return "from-[#4FC3F7] to-[#81D4FA]";
+      case "platinum": return "from-[#B388FF] to-[#E1BEE7]";
+      default: return "from-[#8BC5E3] to-[#B6E3F7]";
     }
   }
   
   switch (tierId) {
-    case "general": return "from-[#5BA3D0] to-[#9CCEF4]";
-    case "bronze": return "from-[#C0C0C0] to-[#E6E8E6]";
-    case "silver": return "from-[#FFD700] to-[#FFEB99]";
-    case "gold": return "from-[#00BFFF] to-[#87CEEB]";
-    case "platinum": return "from-[#9b87f5] to-[#B8A9F8]";
-    default: return "from-[#5BA3D0] to-[#9CCEF4]";
+    case "general": return "from-[#B6E3F7] to-[#E3F2FD]";
+    case "bronze": return "from-[#EBEBEB] to-[#F5F5F5]";
+    case "silver": return "from-[#FFF3B8] to-[#FFFDE7]";
+    case "gold": return "from-[#81D4FA] to-[#E1F5FE]";
+    case "platinum": return "from-[#E1BEE7] to-[#F3E5F5]";
+    default: return "from-[#B6E3F7] to-[#E3F2FD]";
   }
 };
 
 const getCardMainBg = (tier: Tier, dark: boolean) => {
   if (dark) {
     switch (tier.id) {
-      case "general": return "bg-gradient-to-br from-[#8BCDFF]/20 to-[#D3E4FD]/20";
-      case "bronze": return "bg-gradient-to-br from-[#E6E8E6]/20 to-[#C0C0C0]/20";
-      case "silver": return "bg-gradient-to-br from-[#FFE55C]/20 to-[#FFD700]/20";
-      case "gold": return "bg-gradient-to-br from-[#5FD4FF]/20 to-[#00BFFF]/20";
-      case "platinum": return "bg-gradient-to-br from-[#BE9BFF]/20 to-[#9b87f5]/20";
+      case "general": return "bg-gradient-to-br from-[#5B9AC7]/20 to-[#8BC5E3]/20";
+      case "bronze": return "bg-gradient-to-br from-[#9E9E9E]/20 to-[#C5C5C5]/20";
+      case "silver": return "bg-gradient-to-br from-[#FFD700]/20 to-[#FFF3B8]/20";
+      case "gold": return "bg-gradient-to-br from-[#039BE5]/20 to-[#4FC3F7]/20";
+      case "platinum": return "bg-gradient-to-br from-[#9575CD]/20 to-[#B388FF]/20";
       default: return "bg-gradient-to-br from-gray-800/20 to-gray-900/20";
     }
   }
   
   switch (tier.id) {
-    case "general": return "bg-gradient-to-br from-[#8BCDFF] to-[#D3E4FD]";
-    case "bronze": return "bg-gradient-to-br from-[#E6E8E6] to-[#C0C0C0]";
-    case "silver": return "bg-gradient-to-br from-[#FFE55C] to-[#FFD700]";
-    case "gold": return "bg-gradient-to-br from-[#5FD4FF] to-[#00BFFF]";
-    case "platinum": return "bg-gradient-to-br from-[#BE9BFF] to-[#9b87f5]";
+    case "general": return "bg-gradient-to-br from-[#8BC5E3] to-[#B6E3F7]";
+    case "bronze": return "bg-gradient-to-br from-[#C5C5C5] to-[#EBEBEB]";
+    case "silver": return "bg-gradient-to-br from-[#FFD700] to-[#FFF3B8]";
+    case "gold": return "bg-gradient-to-br from-[#4FC3F7] to-[#81D4FA]";
+    case "platinum": return "bg-gradient-to-br from-[#B388FF] to-[#E1BEE7]";
     default: return "bg-gradient-to-br from-white to-gray-100";
   }
 };
@@ -92,15 +91,29 @@ const TierCard = ({
   const progressColors = getProgressColors(tier.id, dark);
   
   const calculateProgress = () => {
-    if (pointsToNextTier === undefined) return 0;
+    const currentPoints = pointsToNextTier !== undefined 
+      ? tier.requiredPoints - pointsToNextTier
+      : 0;
+      
+    if (isCurrentTier && pointsToNextTier !== undefined) {
+      const nextTierPoints = tier.requiredPoints + pointsToNextTier;
+      return ((nextTierPoints - pointsToNextTier - tier.requiredPoints) / 
+              (nextTierPoints - tier.requiredPoints)) * 100;
+    }
     
-    const nextTierPoints = tier.requiredPoints + pointsToNextTier;
-    const currentUserPoints = nextTierPoints - pointsToNextTier;
-    const progressPercentage = ((currentUserPoints - tier.requiredPoints) / 
-                              (nextTierPoints - tier.requiredPoints)) * 100;
-                              
-    // Ensure progress is between 0 and 100
-    return Math.max(0, Math.min(100, progressPercentage));
+    return (currentPoints / tier.requiredPoints) * 100;
+  };
+
+  const getProgressText = () => {
+    const currentPoints = pointsToNextTier !== undefined 
+      ? tier.requiredPoints - pointsToNextTier
+      : 0;
+      
+    if (isCurrentTier && pointsToNextTier !== undefined) {
+      return `${pointsToNextTier} points to next tier`;
+    }
+    
+    return `${currentPoints}/${tier.requiredPoints} points`;
   };
 
   return (
@@ -110,7 +123,7 @@ const TierCard = ({
       animate={{ opacity: 1, y: 0, scale: isCurrent ? 1.01 : 0.96 }}
       exit={{ opacity: 0, y: 20, scale: 0.96 }}
       className={cn(
-        "relative px-6 pt-8 pb-7 rounded-3xl shadow-xl border transition-all flex flex-col justify-between h-[340px] md:h-[360px] min-w-0 backdrop-blur-sm mx-auto",
+        "relative px-6 pt-8 pb-7 rounded-3xl shadow-xl border transition-all flex flex-col justify-between h-[300px] md:h-[320px] min-w-0 backdrop-blur-sm mx-auto",
         getCardMainBg(tier, dark),
         isCurrent ? "ring-2 ring-blue-300 dark:ring-blue-800 z-10" : "opacity-80",
       )}
@@ -121,8 +134,7 @@ const TierCard = ({
           : "0 4px 16px 0 rgba(60, 56, 72, 0.09)",
       }}
     >
-      <div className="flex flex-col justify-between w-full h-full">
-        {/* Top section */}
+      <div className="flex flex-col justify-between w-full h-full space-y-4">
         <div>
           {isCurrent && isCurrentTier && (
             <div className="mb-1 text-xs font-semibold text-blue-800 dark:text-blue-200">
@@ -147,26 +159,21 @@ const TierCard = ({
                 <div className="flex items-center justify-between">
                   <span>{tier.requiredPoints} points required</span>
                 </div>
-                {pointsToNextTier !== undefined && (
-                  <>
-                    <div className="relative w-full h-2 rounded-full overflow-hidden bg-gray-200/50 dark:bg-gray-700/50">
-                      <div 
-                        className={cn(
-                          "absolute top-0 left-0 h-full bg-gradient-to-r transition-all",
-                          progressColors
-                        )}
-                        style={{ width: `${calculateProgress()}%` }}
-                      />
-                    </div>
-                    <div className="text-xs font-medium">
-                      {pointsToNextTier} points to next tier
-                    </div>
-                  </>
-                )}
+                <div className="relative w-full h-2 rounded-full overflow-hidden bg-gray-200/50 dark:bg-gray-700/50">
+                  <div 
+                    className={cn(
+                      "absolute top-0 left-0 h-full bg-gradient-to-r transition-all",
+                      progressColors
+                    )}
+                    style={{ width: `${calculateProgress()}%` }}
+                  />
+                </div>
+                <div className="text-xs font-medium">
+                  {getProgressText()}
+                </div>
               </div>
             </div>
             
-            {/* Rank Icon */}
             <div className="ml-4"> 
               <img 
                 src={getRankIcon(tier.id)} 
@@ -177,10 +184,9 @@ const TierCard = ({
           </div>
         </div>
         
-        {/* Upgrade button */}
         <button
           className={cn(
-            "mt-4 w-full rounded-full px-5 py-2.5 font-semibold shadow transition",
+            "w-full rounded-full px-5 py-2.5 font-semibold shadow transition",
             canUpgrade 
               ? "bg-blue-500 hover:bg-blue-600 text-white"
               : "bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-300 cursor-not-allowed opacity-60"
