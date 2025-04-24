@@ -19,7 +19,7 @@ interface TierCardProps {
   canUpgrade: boolean;
   walletId: string;
   pointsToNextTier?: number;
-  currentPoints: number; // Add this to access the user's current points
+  currentPoints: number;
 }
 
 const getRankIcon = (tierId: string) => {
@@ -96,14 +96,14 @@ const TierCard = ({
   const calculateProgress = () => {
     if (isCurrentTier && pointsToNextTier !== undefined) {
       // For current tier: Show progress towards next tier
-      const nextTierPoints = tier.requiredPoints + pointsToNextTier;
+      const nextTierPoints = pointsToNextTier;
       // Calculate percentage of progress from current tier to next tier
-      return (currentPoints - tier.requiredPoints) / pointsToNextTier * 100;
+      return Math.max(0, Math.min(100, ((currentPoints - tier.requiredPoints) / nextTierPoints) * 100));
     } else {
       // For other tiers: Show progress towards this tier
       // If current points are less than required, show relative progress
       if (currentPoints < tier.requiredPoints) {
-        return (currentPoints / tier.requiredPoints) * 100;
+        return Math.max(0, Math.min(100, (currentPoints / tier.requiredPoints) * 100));
       }
       // If user has already reached this tier's requirements, show 100%
       return 100;
