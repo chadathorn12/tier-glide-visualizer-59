@@ -99,6 +99,7 @@ const PremiumTierCarousel = ({
                   onUpgrade={() => onUpgrade(tier.id)}
                   walletId={walletId}
                   pointsToNextTier={showPointsToNext ? pointsToNextForThis : undefined}
+                  currentPoints={currentPoints}
                 />
               </CarouselItem>
             );
