@@ -1,4 +1,3 @@
-
 // Membership tier data
 export interface Privilege {
   id: string;
@@ -39,14 +38,14 @@ export const userData: UserData = {
 export const tiers: Tier[] = [
   {
     id: "general",
-    name: "General",
+    name: "Normal",
     requiredPoints: 0,
     colors: {
-      primary: "#5BA3D0",
-      secondary: "#9CCEF4",
-      tertiary: "#D1E8F8",
-      accent: "#4A90CD",
-      background: "linear-gradient(135deg, #87CEEB 0%, #4682B4 100%)",
+      primary: "#F1F0FB",
+      secondary: "#F8F8F8",
+      tertiary: "#FFFFFF",
+      accent: "#E3E3E3",
+      background: "linear-gradient(135deg, #F1F0FB 0%, #F8F8F8 100%)",
     },
     icon: "shield",
     privileges: [
@@ -72,14 +71,14 @@ export const tiers: Tier[] = [
   },
   {
     id: "bronze",
-    name: "Bronze",
+    name: "Silver",
     requiredPoints: 100,
     colors: {
-      primary: "#CD7F32",
-      secondary: "#E3A875",
-      tertiary: "#F5D0A9",
-      accent: "#8B5A2B",
-      background: "linear-gradient(135deg, #DAA06D 0%, #B8732E 100%)",
+      primary: "#C0C0C0",
+      secondary: "#A9A9A9",
+      tertiary: "#D3D3D3",
+      accent: "#808080",
+      background: "linear-gradient(135deg, #C0C0C0 0%, #A9A9A9 100%)",
     },
     icon: "shield-check",
     privileges: [
@@ -117,14 +116,14 @@ export const tiers: Tier[] = [
   },
   {
     id: "silver",
-    name: "Silver",
+    name: "Gold",
     requiredPoints: 300,
     colors: {
-      primary: "#9B87F5",
-      secondary: "#B8A9F8",
-      tertiary: "#E5DEFF",
-      accent: "#7E69AB",
-      background: "linear-gradient(135deg, #A7A0D8 0%, #6E59A5 100%)",
+      primary: "#FFD700",
+      secondary: "#FFA500",
+      tertiary: "#FFEB99",
+      accent: "#B8860B",
+      background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
     },
     icon: "diamond",
     privileges: [
@@ -174,14 +173,14 @@ export const tiers: Tier[] = [
   },
   {
     id: "gold",
-    name: "Gold",
+    name: "Diamond",
     requiredPoints: 500,
     colors: {
-      primary: "#FFD700",
-      secondary: "#FFEB99",
-      tertiary: "#FFF8D9",
-      accent: "#D4AF37",
-      background: "linear-gradient(135deg, #FFE259 0%, #FFA751 100%)",
+      primary: "#B9F2FF",
+      secondary: "#00BFFF",
+      tertiary: "#87CEEB",
+      accent: "#4682B4",
+      background: "linear-gradient(135deg, #B9F2FF 0%, #00BFFF 100%)",
     },
     icon: "star",
     privileges: [
@@ -234,11 +233,11 @@ export const tiers: Tier[] = [
     name: "Platinum",
     requiredPoints: 1000,
     colors: {
-      primary: "#E5E4E2",
-      secondary: "#C0C0C0",
-      tertiary: "#F5F5F5",
-      accent: "#B0B0B0",
-      background: "linear-gradient(135deg, #E9E9E9 0%, #B4B4B4 100%)",
+      primary: "#E5DEFF",
+      secondary: "#9b87f5",
+      tertiary: "#B8A9F8",
+      accent: "#7E69AB",
+      background: "linear-gradient(135deg, #E5DEFF 0%, #9b87f5 100%)",
     },
     icon: "medal",
     privileges: [
