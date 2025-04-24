@@ -73,13 +73,14 @@ const MembershipTier = () => {
       }
     }
     
+    // New light mode gradients - very soft, pastel, fading to white
     switch (selectedTier.id) {
-      case "general": return "bg-gradient-to-b from-[#8BCDFF] via-[#D3E4FD]/70 to-white";
-      case "bronze": return "bg-gradient-to-b from-[#E6E8E6] via-[#C0C0C0]/70 to-white";
-      case "silver": return "bg-gradient-to-b from-[#FFE55C] via-[#FFD700]/70 to-white";
-      case "gold": return "bg-gradient-to-b from-[#5FD4FF] via-[#00BFFF]/70 to-white";
-      case "platinum": return "bg-gradient-to-b from-[#BE9BFF] via-[#9b87f5]/70 to-white";
-      default: return "bg-gradient-to-b from-[#8BCDFF] via-[#D3E4FD]/70 to-white";
+      case "general": return "bg-gradient-to-b from-[#F2FCE2]/50 via-[#F2FCE2]/20 to-white";
+      case "bronze": return "bg-gradient-to-b from-[#FEC6A1]/50 via-[#FEC6A1]/20 to-white";
+      case "silver": return "bg-gradient-to-b from-[#F1F0FB]/50 via-[#F1F0FB]/20 to-white";
+      case "gold": return "bg-gradient-to-b from-[#FEF7CD]/50 via-[#FEF7CD]/20 to-white";
+      case "platinum": return "bg-gradient-to-b from-[#FFDEE2]/50 via-[#FFDEE2]/20 to-white";
+      default: return "bg-gradient-to-b from-[#D3E4FD]/50 via-[#D3E4FD]/20 to-white";
     }
   };
 
